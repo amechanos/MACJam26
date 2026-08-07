@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b2qw5bspovbr3"]
+
+[ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://bullet.gd" id="1_v7oki"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7oki"]
+size = Vector2(5, 15)
+
+[node name="bullet" type="Node2D" unique_id=1002201446]
+script = ExtResource("1_v7oki")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2110073510]
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D" unique_id=1073907100]
+offset_left = 15.0
+offset_right = 20.0
+offset_bottom = 15.000001
+rotation = 1.5707964
+color = Color(1, 1, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1697925244]
+position = Vector2(7.5, 2.5)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_v7oki")

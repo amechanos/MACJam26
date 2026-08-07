@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://6mgnfr6rop5y"]
+
+[ext_resource type="Script" uid="uid://c3vosyny4405k" path="res://ship.gd" id="1_4cq66"]
+[ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://gun.tscn" id="2_4cq66"]
+
+[node name="ship" type="Node2D" unique_id=1884063870]
+script = ExtResource("1_4cq66")
+use_mouse_movement = true
+
+[node name="TextureRect3" type="ColorRect" parent="." unique_id=2089672703]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 67.0
+offset_bottom = 64.0
+color = Color(1.5979409e-05, 0.96183914, 0.96301883, 1)
+
+[node name="bullet" parent="." unique_id=1866178119 instance=ExtResource("2_4cq66")]
+position = Vector2(67, 14)
