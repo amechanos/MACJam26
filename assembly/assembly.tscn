@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cdd462ielore4"]
 
-[ext_resource type="Script" uid="uid://cnlc1seaukcql" path="res://assembly.gd" id="1_i4ir1"]
+[ext_resource type="Script" uid="uid://cnlc1seaukcql" path="res://assembly/assembly.gd" id="1_i4ir1"]
 
 [node name="assembly" type="Node2D" unique_id=391217497]
 script = ExtResource("1_i4ir1")

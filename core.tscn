@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://6m7qs87mvaff"]
+
+[sub_resource type="GDScript" id="GDScript_a5wrw"]
+script/source = "# Core.gd
+extends Control
+class_name Core
+
+var rotation_index: int = 0
+var grid_pos: Vector2i
+var movable: bool = true
+"
+
+[node name="core" type="Control" unique_id=195351709]
+layout_mode = 3
+anchors_preset = 0
+script = SubResource("GDScript_a5wrw")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1372793938]
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0

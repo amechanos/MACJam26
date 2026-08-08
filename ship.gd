@@ -1,16 +1,11 @@
-extends CharacterBody2D
+extends Node2D
 class_name Ship
-
-@onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
-
-var health: float = 100.0
-@export var xp: float = 0.0
-var level: int = 0
 
 # --- MOVEMENT VARIABLES ---
 @export var move_speed: float = 400.0
 @export var use_mouse_movement: bool = false  # Toggle in the inspector!
 
+<<<<<<< Updated upstream
 # --- GUN VARIABLES ---
 <<<<<<< Updated upstream
 var gun_list: Array[Gun] = []
@@ -19,17 +14,16 @@ var gun_orientation: Array[float] = [] # Relative rotation offset (in radians) f
 var time_since_last_shot: float = 0.0
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 var screen_size: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
-	if hurtbox:
-		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
-	else:
-		push_warning("Ship: 'Area2D' child node not found on " + name)
 
 func _process(delta: float) -> void:
 	move(delta)
+<<<<<<< Updated upstream
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 <<<<<<< Updated upstream
@@ -54,6 +48,8 @@ func kill() -> void:
 	# Death sounds here!
 	print("Game Over!")
 	queue_free()
+=======
+>>>>>>> Stashed changes
 	
 func move(delta: float) -> void:
 	if use_mouse_movement:

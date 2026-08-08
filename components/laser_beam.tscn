@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bfvn0hgfb2ulh"]
+
+[ext_resource type="Script" uid="uid://cyvoq72a7ud82" path="res://components/laser_beam.gd" id="1_2k56g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(16, 900)
+
+[node name="LaserBeam" type="Area2D" unique_id=1242262854]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_2k56g")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=1003120785]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=111385307]
+shape = SubResource("RectangleShape2D_1")
