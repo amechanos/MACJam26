@@ -1,4 +1,4 @@
-extends "res://base-projectile.gd"
+extends BaseProjectile
 
 func _ready() -> void:
 	damage = 50.0

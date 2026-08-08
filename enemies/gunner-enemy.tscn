@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bg1mrfjh3ath2"]
+
+[ext_resource type="Script" uid="uid://cnomm4bh3kj5l" path="res://enemies/gunner-enemy.gd" id="1_wuttg"]
+[ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://components/blaster/gun.tscn" id="2_1rxco"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1rxco"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3vwvx"]
+size = Vector2(40, 41)
+
+[node name="GunnerEnemy" type="CharacterBody2D" unique_id=1763633671]
+script = ExtResource("1_wuttg")
+gun_scene = ExtResource("2_1rxco")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1772677363]
+shape = SubResource("RectangleShape2D_1rxco")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1763641983]
+
+[node name="hitbox" type="CollisionShape2D" parent="Area2D" unique_id=1526052569]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_3vwvx")
+debug_color = Color(0.6633702, 0.44787687, 0.6659709, 0.41960785)
+
+[node name="ColorRect" type="ColorRect" parent="Area2D" unique_id=2131392185]
+offset_left = -22.0
+offset_top = -23.0
+offset_right = 23.0
+offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true

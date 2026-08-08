@@ -1,0 +1,127 @@
+extends CharacterBody2D
+class_name BaseEnemy
+
+@onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
+
+var health: float = 100.0
+var speed: float = 3.0
+var target_pos: Vector2 = Vector2.ZERO
+var screen_size: Vector2 = Vector2.ZERO
+const dest_dist: float = 0.01
+
+# Rotation parameters
+@export var angular_velocity: float = 0.5 # Rotation speed in rad/sec
+@export_range(0.0, 360.0) var min_angle_degrees: float = 170.0
+@export_range(0.0, 360.0) var max_angle_degrees: float = 190.0
+
+var min_angle_rad: float
+var max_angle_rad: float
+
+# Gun management
+var gun_list: Array[WeaponBase] = []
+var gun_orientation: Array[float] = [] # Relative rotation offset (in radians) for each gun
+
+# Interval range for picking new locations (seconds)
+var min_interval: float = 1.0
+var max_interval: float = 3.0
+
+# Offset range from current position while moving to a new position
+var min_offset: Vector2 = Vector2(-150.0, -150.0)
+var max_offset: Vector2 = Vector2(150.0, 150.0)
+
+# Bounding box dictionary: "x" and "y" each hold Vector2(min, max)
+var boundary: Dictionary = {}
+var move_timer: float = 0.0
+var current_interval: float = 0.0
+
+func _ready() -> void:
+	screen_size = get_viewport_rect().size
+	
+	if hurtbox:
+		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+	else:
+		push_warning("BaseEnemy: 'Area2D' child node not found on " + name)
+	
+	# Set initial facing direction to Left (PI radians / 180 degrees)
+	rotation = PI
+	
+	# Convert Inspector degree values to radians
+	min_angle_rad = deg_to_rad(min_angle_degrees)
+	max_angle_rad = deg_to_rad(max_angle_degrees)
+	
+	if boundary.is_empty():
+		boundary = {
+			"x": Vector2(50.0, screen_size.x - 50.0),
+			"y": Vector2(50.0, screen_size.y - 50.0)
+		}
+		
+	global_position = Vector2(screen_size.x + 50, randf_range(50.0, screen_size.y - 50.0))
+	_reset_move_timer()
+	_pick_new_target()
+
+func _process(delta: float) -> void:
+	move(target_pos, delta)
+	
+	# Apply continuous rotation
+	rotation += angular_velocity * delta
+	
+	# Reverse rotation direction if exceeding the angular boundaries
+	if rotation >= max_angle_rad:
+		rotation = max_angle_rad
+		angular_velocity = -abs(angular_velocity)
+	elif rotation <= min_angle_rad:
+		rotation = min_angle_rad
+		angular_velocity = abs(angular_velocity)
+
+	orient_gun()
+	
+	move_timer += delta
+	if move_timer >= current_interval:
+		move_timer = 0.0
+		_reset_move_timer()
+		_pick_new_target()
+
+func orient_gun() -> void:
+	for i in range(gun_list.size()):
+		if i < gun_orientation.size() and is_instance_valid(gun_list[i]):
+			gun_list[i].global_rotation = global_rotation + gun_orientation[i]
+
+func fire_gun() -> void:
+	for gun in gun_list:
+		if is_instance_valid(gun):
+			gun.fire()
+
+func _pick_new_target() -> void:
+	var offset_x: float = randf_range(min_offset.x, max_offset.x)
+	var offset_y: float = randf_range(min_offset.y, max_offset.y)
+	var candidate_pos: Vector2 = global_position + Vector2(offset_x, offset_y)
+	
+	candidate_pos.x = clampf(candidate_pos.x, boundary["x"].x, boundary["x"].y)
+	candidate_pos.y = clampf(candidate_pos.y, boundary["y"].x, boundary["y"].y)
+	
+	target_pos = candidate_pos
+
+func _reset_move_timer() -> void:
+	current_interval = randf_range(min_interval, max_interval)
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if area is not BaseProjectile:
+		return
+	if not area.from_player:
+		return
+	
+	take_dmg(area.damage)
+	area.pierce -= 1
+	
+func move(destination: Vector2, delta: float) -> void:
+	global_position = global_position.lerp(destination, 1.0 - exp(-speed * delta))
+
+func take_dmg(dmg: float) -> void:
+	health -= dmg
+	print("Enemy took damage!")
+	if health <= 0:
+		kill()
+
+func kill() -> void:
+	queue_free()
+	print("Enemy died!")

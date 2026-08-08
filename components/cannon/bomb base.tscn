@@ -1,14 +1,12 @@
 [gd_scene format=3 uid="uid://chp5baj8doot2"]
 
-[ext_resource type="Script" uid="uid://d28rrhq3r3p1q" path="res://bomb_base.gd" id="1_bjdg2"]
-[ext_resource type="PackedScene" uid="uid://t1mpn65kq5yf" path="res://Bomb.tscn" id="2_6uonr"]
+[ext_resource type="Script" uid="uid://d28rrhq3r3p1q" path="res://components/cannon/bomb_base.gd" id="1_bjdg2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ko2n8"]
 size = Vector2(40, 23)
 
 [node name="Node2D" type="Node2D" unique_id=1213972145]
 script = ExtResource("1_bjdg2")
-bomb_scene = ExtResource("2_6uonr")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1601732597]
 offset_left = 17.0
