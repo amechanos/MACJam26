@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 # ============================================================================
 # CONFIGURATION
@@ -13,9 +13,42 @@ extends Node2D
 @export var ghost_invalid_color: Color = Color(1.0, 0.2, 0.2, 0.35)
 
 @export var palette_margin: float = 30.0
-@export var palette_spacing: float = 16.0
+@export var palette_spacing: float = 200
+@export var shift_everything_up: float = 100
+@export var palette_horizontal_gap: float = 150 # replaces spacing for wider gaps
 
-@onready var core = $comp_layer/Core
+@onready var core = $comp_layer/core
+@onready var box = $HBoxContainer
+@onready var chosen = $comp_layer/Component1
+@onready var layer = $comp_layer
+
+var grid_matrix: Array = []
+
+func _ready() -> void:
+	
+	var screen_size = get_viewport().size 
+	
+	box.position.x = 300
+	print(_get_all_components())
+	chosen.hide()
+	link_cards()
+	_init_grid()
+	get_tree().root.size_changed.connect(_on_window_resized)
+	_setup_all_components()
+	
+	layer.process_mode = Node.PROCESS_MODE_DISABLED
+
+func link_cards():
+	for item in box.get_children():
+		item.pressed.connect(set_component.bind(item.text))
+
+func set_component(type):
+	chosen.set_meta("shape_name", type.to_upper())
+	chosen.show()
+	layer.show()
+	box.hide()
+	layer.process_mode = Node.PROCESS_MODE_INHERIT
+
 # ============================================================================
 # SHAPE DEFINITIONS
 # ============================================================================
@@ -36,7 +69,6 @@ const SHAPES = {
 # STATE
 # ============================================================================
 var grid_origin: Vector2 = Vector2.ZERO
-var grid_matrix: Array = []
 
 var _dragging: Control = null
 var _drag_offset: Vector2 = Vector2.ZERO
@@ -52,33 +84,35 @@ var _palette_positions: Dictionary = {}
 # ============================================================================
 # LIFECYCLE
 # ============================================================================
-func _ready() -> void:
-	_init_grid()
-	_center_grid()
-	get_tree().root.size_changed.connect(_on_window_resized)
-	_setup_all_components()
-	
-	var center_col := grid_cols / 2  # 2 for a 5×5 grid
-	var center_row := grid_rows / 2  # 2 for a 5×5 grid
-	_place_component(core, center_col, center_row, 0)
 
 func _init_grid() -> void:
 	grid_matrix.clear()
-	for r in grid_rows:
-		var row: Array = []
-		row.resize(grid_cols)
-		row.fill(null)
-		grid_matrix.append(row)
+	
+	if Global.matrix.is_empty():
+		for r in grid_rows:
+			var row: Array = []
+			row.resize(grid_cols)
+			row.fill(null)
+			grid_matrix.append(row)
+			
+		_center_grid()
+		
+		var center_col := grid_cols / 2  # 2 for a 5×5 grid
+		var center_row := grid_rows / 2  # 2 for a 5×5 grid
+		_place_component(core, center_col, center_row, 0)
+	else:
+		load_placement_matrix(Global.matrix)
 
 func _center_grid() -> void:
 	var vp := get_viewport_rect().size
 	var grid_px := Vector2(grid_cols * cell_size, grid_rows * cell_size)
 	grid_origin = (vp - grid_px) / 2.0
+	grid_origin.y -= shift_everything_up  # Shift grid + palette up
 
 func _on_window_resized() -> void:
 	_center_grid()
 	_layout_palette()
-	_reposition_placed_components()
+	#_reposition_placed_components()
 	queue_redraw()
 
 # ============================================================================
@@ -104,7 +138,7 @@ func _setup_all_components() -> void:
 
 func _setup_component(c: Control) -> void:
 	if not c.has_meta("shape_name"):
-		c.set_meta("shape_name", "dot")
+		c.set_meta("shape_name", "CORE")
 	if not c.has_meta("grid_rot"):
 		c.set_meta("grid_rot", 0)
 	if not c.has_meta("grid_col"):
@@ -157,21 +191,39 @@ func _layout_palette() -> void:
 	var all := _get_all_components()
 	all.sort_custom(func(a, b): return a.get_meta("palette_index") < b.get_meta("palette_index"))
 	
-	var x: float = palette_margin
-	var y: float = palette_margin
+	# Fixed slot size for consistent alignment
+	var slot_w := cell_size * 2.5
+	var slot_h := cell_size * 2.5
+	
+	# Position palette beneath the grid
+	var palette_y := grid_origin.y + (grid_rows * cell_size) + palette_margin
+	
+	# Total width of the palette row
+	var total_width := all.size() * slot_w
+	if all.size() > 1:
+		total_width += (all.size() - 1) * palette_horizontal_gap
+	
+	# Center the entire row on the screen (not just under the grid)
+	var x := (get_viewport_rect().size.x - total_width) / 2.0
+	var y := palette_y
 	
 	for c in all:
-		_palette_positions[c] = Vector2(x, y)
+		# Center the block inside its slot
+		var centered_x = x + (slot_w - c.size.x) / 2.0
+		var centered_y = y + (slot_h - c.size.y) / 2.0
+		
+		_palette_positions[c] = Vector2(centered_x, centered_y)
 		if c.get_meta("in_palette"):
-			c.global_position = Vector2(x, y)
-		y += max(c.size.y, cell_size * 1.5) + palette_spacing
+			c.global_position = Vector2(centered_x, centered_y)
+		
+		x += slot_w + palette_horizontal_gap
 
-func _reposition_placed_components() -> void:
-	for c in _get_all_components():
-		var col: int = c.get_meta("grid_col")
-		var row: int = c.get_meta("grid_row")
-		if col >= 0 and row >= 0:
-			c.global_position = grid_origin + Vector2(col, row) * cell_size
+#func _reposition_placed_components() -> void:
+	#for c in _get_all_components():
+		#var col: int = c.get_meta("grid_col")
+		#var row: int = c.get_meta("grid_row")
+		#if col >= 0 and row >= 0:
+			#c.global_position = grid_origin + Vector2(col, row) * cell_size
 
 func _get_all_components() -> Array:
 	var result: Array = []
@@ -180,7 +232,7 @@ func _get_all_components() -> Array:
 			if c is Control:
 				result.append(c)
 	for c in get_children():
-		if c is Control and c not in result and c.name != "comp_layer":
+		if c is Control and c not in result and c.name != "comp_layer" and c.name != "HBoxContainer":
 			result.append(c)
 	return result
 
@@ -245,9 +297,9 @@ func _on_component_gui_input(event: InputEvent, component: Control) -> void:
 				_start_drag(component)
 			else:
 				_end_drag(component)
-		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			if _dragging == component:
-				_rotate(component)
+	elif event.is_action_pressed("rotate"):
+		if not _dragging == component:
+			_rotate(component)
 	elif event is InputEventMouseMotion and _dragging == component:
 		_update_drag(component)
 
@@ -355,6 +407,8 @@ func _place_component(c: Control, col: int, row: int, rot: int) -> void:
 				grid_matrix[row + r][col + cl] = c
 	
 	c.global_position = grid_origin + Vector2(col, row) * cell_size
+	print(grid_matrix)
+	print("Reference: ", get_placement_matrix())
 	_apply_component_size(c)
 
 func _remove_from_grid(c: Control) -> void:
@@ -423,3 +477,156 @@ func print_grid() -> void:
 				line += grid_matrix[r][c].name.substr(0, 2) + " "
 		print(line)
 	print("------------------")
+	
+# ============================================================================
+# EXPORT / IMPORT MATRIX
+# ============================================================================
+
+## Returns a 2D array (rows × cols) where empty cells are null
+## and occupied cells contain the shape name string (e.g. "CORE", "BLASTER").
+func get_placement_matrix() -> Array:
+	var result: Array = []
+	for r in grid_rows:
+		var row: Array = []
+		for c in grid_cols:
+			var comp = grid_matrix[r][c]
+			row.append(comp.get_meta("shape_name") if comp != null else null)
+		result.append(row)
+	return result
+
+## Reads a 2D array of shape names (or nulls) and reconstructs the grid.
+## Re-uses your existing ColorRect components from the palette.
+## NOTE: two identical shapes touching edge-to-edge will be treated as one.
+
+func load_placement_matrix(matrix: Array) -> void:
+	if matrix.size() != grid_rows:
+		push_error("Matrix row count doesn't match grid_rows")
+		return
+	for row in matrix:
+		if row.size() != grid_cols:
+			push_error("Matrix col count doesn't match grid_cols")
+			return
+	
+	# ── Clear everything back to palette ──
+	for c in _get_all_components():
+		_remove_from_grid(c)
+		c.set_meta("grid_col", -1)
+		c.set_meta("grid_row", -1)
+		c.set_meta("in_palette", true)
+	
+	_layout_palette()
+	for c in _get_all_components():
+		if _palette_positions.has(c):
+			c.global_position = _palette_positions[c]
+	
+	# ── Pool of available components by shape name ──
+	var available: Dictionary = {}
+	for c in _get_all_components():
+		var name: String = c.get_meta("shape_name")
+		if not available.has(name):
+			available[name] = []
+		available[name].append(c)
+	
+	# ─-- Parse matrix --─
+	var visited: Array = []
+	for r in grid_rows:
+		var row: Array = []
+		row.resize(grid_cols)
+		row.fill(false)
+		visited.append(row)
+	
+	for r in grid_rows:
+		for c in grid_cols:
+			if visited[r][c] or matrix[r][c] == null:
+				continue
+			
+			var shape_name: String = matrix[r][c]
+			if not SHAPES.has(shape_name):
+				push_warning("Unknown shape '" + shape_name + "' at (" + str(c) + "," + str(r) + ")")
+				visited[r][c] = true
+				continue
+			
+			# Flood-fill this shape instance
+			var cells: Array[Vector2i] = []
+			var queue: Array[Vector2i] = [Vector2i(c, r)]
+			visited[r][c] = true
+			while queue.size() > 0:
+				var pos = queue.pop_front()
+				cells.append(pos)
+				for d in [Vector2i(1,0), Vector2i(-1,0), Vector2i(0,1), Vector2i(0,-1)]:
+					var np = pos + d
+					if np.x >= 0 and np.x < grid_cols and np.y >= 0 and np.y < grid_rows:
+						if not visited[np.y][np.x] and matrix[np.y][np.x] == shape_name:
+							visited[np.y][np.x] = true
+							queue.append(np)
+			
+			# Bounding box of this instance
+			var min_c := grid_cols
+			var min_r := grid_rows
+			var max_c := -1
+			var max_r := -1
+			for pos in cells:
+				min_c = mini(min_c, pos.x)
+				min_r = mini(min_r, pos.y)
+				max_c = maxi(max_c, pos.x)
+				max_r = maxi(max_r, pos.y)
+			
+			var h := max_r - min_r + 1
+			var w := max_c - min_c + 1
+			
+			# Build binary pattern from bounding box
+			var pattern: Array = []
+			for rr in h:
+				var prow: Array = []
+				for cc in w:
+					var filled := false
+					for pos in cells:
+						if pos.x == min_c + cc and pos.y == min_r + rr:
+							filled = true
+							break
+					prow.append(1 if filled else 0)
+				pattern.append(prow)
+			
+			# Try to match against all 4 rotations of the base shape
+			var base_shape: Array = SHAPES[shape_name].duplicate(true)
+			var matched_rot := -1
+			for rot in 4:
+				var test_shape: Array = base_shape.duplicate(true)
+				for i in rot:
+					var rows = test_shape.size()
+					var cols = test_shape[0].size()
+					var rotated: Array = []
+					for ci in cols:
+						var new_row: Array = []
+						for ri in range(rows - 1, -1, -1):
+							new_row.append(test_shape[ri][ci])
+						rotated.append(new_row)
+					test_shape = rotated
+				
+				if _patterns_equal(test_shape, pattern):
+					matched_rot = rot
+					break
+			
+			if matched_rot < 0:
+				push_warning("Pattern at (" + str(min_c) + "," + str(min_r) + ") doesn't match any rotation of '" + shape_name + "'")
+				continue
+			
+			if not available.has(shape_name) or available[shape_name].size() == 0:
+				push_warning("No available component for shape: " + shape_name)
+				continue
+			
+			var comp: Control = available[shape_name].pop_front()
+			_place_component(comp, min_c, min_r, matched_rot)
+	
+	queue_redraw()
+
+func _patterns_equal(a: Array, b: Array) -> bool:
+	if a.size() != b.size():
+		return false
+	for i in a.size():
+		if a[i].size() != b[i].size():
+			return false
+		for j in a[i].size():
+			if a[i][j] != b[i][j]:
+				return false
+	return true
