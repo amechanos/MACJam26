@@ -2,39 +2,51 @@
 
 [ext_resource type="Script" uid="uid://cnlc1seaukcql" path="res://assembly.gd" id="1_i4ir1"]
 
-[node name="assembly" type="Node2D" unique_id=391217497]
+[node name="assembly" type="Control" unique_id=1662859429]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_i4ir1")
+palette_spacing = 256.0
+palette_horizontal_gap = 256.0
 
-[node name="comp_layer" type="Node2D" parent="." unique_id=1874369721]
+[node name="comp_layer" type="Control" parent="." unique_id=713644149]
+anchors_preset = 0
 
 [node name="Component1" type="ColorRect" parent="comp_layer" unique_id=608525447]
-offset_left = 121.0
-offset_top = 474.0
-offset_right = 221.0
-offset_bottom = 524.0
+layout_mode = 0
+offset_top = 1.0
+offset_right = 50.0
+offset_bottom = 51.0
 color = Color(1, 1, 1, 0)
 metadata/shape_name = "CANNON"
 
-[node name="Component2" type="ColorRect" parent="comp_layer" unique_id=632394405]
-offset_left = 121.0
-offset_top = 474.0
-offset_right = 221.0
-offset_bottom = 524.0
-color = Color(1, 1, 1, 0)
-metadata/shape_name = "BLASTER"
-
-[node name="Component3" type="ColorRect" parent="comp_layer" unique_id=958487847]
-offset_left = 121.0
-offset_top = 474.0
-offset_right = 221.0
-offset_bottom = 524.0
-color = Color(1, 1, 1, 0)
-metadata/shape_name = "LASER"
-
 [node name="core" type="ColorRect" parent="comp_layer" unique_id=606505695]
-offset_left = 121.0
-offset_top = 474.0
-offset_right = 221.0
-offset_bottom = 524.0
+layout_mode = 0
+offset_top = 1.0
+offset_right = 50.0
+offset_bottom = 51.0
 color = Color(1, 1, 1, 0)
 metadata/shape_name = "CORE"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1203705213]
+layout_mode = 0
+offset_top = 460.0
+offset_right = 1152.0
+offset_bottom = 610.0
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Button1" type="Button" parent="HBoxContainer" unique_id=1231093976]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Cannon"
+
+[node name="Button2" type="Button" parent="HBoxContainer" unique_id=2001643398]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Cannon"
+
+[node name="Button3" type="Button" parent="HBoxContainer" unique_id=2119785940]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Laser"
