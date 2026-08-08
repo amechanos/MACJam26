@@ -3,7 +3,13 @@
 [ext_resource type="Script" uid="uid://c3vosyny4405k" path="res://ship.gd" id="1_4cq66"]
 [ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://components/blaster/gun.tscn" id="2_4cq66"]
 
-[node name="ship" type="Node2D" unique_id=1884063870]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
+size = Vector2(150, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mtbgc"]
+size = Vector2(50, 49)
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1169774264]
 script = ExtResource("1_4cq66")
 use_mouse_movement = true
 
@@ -16,3 +22,13 @@ color = Color(1.5979409e-05, 0.96183914, 0.96301883, 1)
 
 [node name="bullet" parent="." unique_id=1866178119 instance=ExtResource("2_4cq66")]
 position = Vector2(52, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1344374723]
+position = Vector2(76, 26)
+shape = SubResource("RectangleShape2D_f23r7")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=432244225]
+
+[node name="hitbox" type="CollisionShape2D" parent="Area2D" unique_id=2033485984]
+position = Vector2(25, 26.5)
+shape = SubResource("RectangleShape2D_mtbgc")

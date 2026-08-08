@@ -2,15 +2,13 @@
 
 [ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://components/blaster/bullet.gd" id="1_mdvuc"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7oki"]
-size = Vector2(5, 15)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
+size = Vector2(15, 5)
 
 [node name="bullet" type="Node2D" unique_id=1002201446]
-script = ExtResource("1_mdvuc")
+script = ExtResource("1_y4yru")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2110073510]
-
-[node name="ColorRect" type="ColorRect" parent="StaticBody2D" unique_id=1073907100]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1073907100]
 offset_left = 15.0
 offset_right = 20.0
 offset_bottom = 15.000001
@@ -18,7 +16,10 @@ rotation = 1.5707964
 color = Color(1, 1, 0, 1)
 metadata/_edit_use_anchors_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1697925244]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=793766561]
 position = Vector2(7.5, 2.5)
-rotation = 1.5707964
-shape = SubResource("RectangleShape2D_v7oki")
+shape = SubResource("RectangleShape2D_f23r7")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1343224885]
+position = Vector2(8, 2)
+rect = Rect2(-10, -4, 20, 9)
