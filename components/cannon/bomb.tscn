@@ -1,8 +1,8 @@
-[gd_scene format=3 uid="uid://t1mpn65kq5yf"]
+[gd_scene format=3 uid="uid://ds4d6k7e6mwmx"]
 
 [ext_resource type="Script" uid="uid://cfjgxgjbdb7q1" path="res://components/cannon/bomb.gd" id="1_a4im0"]
 [ext_resource type="PackedScene" uid="uid://oelxas63f8ln" path="res://components/cannon/explosion.tscn" id="2_iehgk"]
-[ext_resource type="Texture2D" uid="uid://duh30xc8e33aw" path="res://components/blaster/circle.png" id="3_lmso4"]
+[ext_resource type="Texture2D" uid="uid://duh30xc8e33aw" path="res://components/cannon/circle.png" id="3_lmso4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_324ho"]
 radius = 18.0

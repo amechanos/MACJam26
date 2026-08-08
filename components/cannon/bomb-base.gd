@@ -22,7 +22,7 @@ func fire() -> void:
 	var new_bomb = bullet_scene.instantiate()
 	new_bomb.from_player = from_player
 	
-	var spawn_offset = Vector2(body.size.x * 2, 0)
+	var spawn_offset = Vector2(body.size.x, 0)
 	new_bomb.global_position = global_position + spawn_offset.rotated(global_rotation)
 
 	# Add directly to root tree so it moves independently of the enemy node
