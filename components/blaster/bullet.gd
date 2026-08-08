@@ -1,6 +1,5 @@
-extends Area2D
+extends Node2D
 
-class_name Projectile
 var direction: Vector2 = Vector2.ZERO
 var speed: float = 0.0
 

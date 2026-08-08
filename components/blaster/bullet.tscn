@@ -1,25 +1,18 @@
-[gd_scene format=3 uid="uid://b2qw5bspovbr3"]
+[gd_scene format=3 uid="uid://vutdt3yg85ti"]
 
-[ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://components/blaster/bullet.gd" id="1_mdvuc"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qk2o7"]
+size = Vector2(40, 10)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
-size = Vector2(15, 5)
+[node name="Bullet" type="Node2D" unique_id=144552511]
 
-[node name="bullet" type="Node2D" unique_id=1002201446]
-script = ExtResource("1_y4yru")
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=399604]
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1073907100]
-offset_left = 15.0
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1843927374]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_qk2o7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1704497460]
+offset_left = -20.0
 offset_right = 20.0
-offset_bottom = 15.000001
-rotation = 1.5707964
+offset_bottom = 10.0
 color = Color(1, 1, 0, 1)
-metadata/_edit_use_anchors_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=793766561]
-position = Vector2(7.5, 2.5)
-shape = SubResource("RectangleShape2D_f23r7")
-
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1343224885]
-position = Vector2(8, 2)
-rect = Rect2(-10, -4, 20, 9)

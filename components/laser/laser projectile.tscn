@@ -1,20 +1,17 @@
 [gd_scene format=3 uid="uid://b1y2v3ldjtykr"]
 
-[ext_resource type="Script" path="res://laser_projectile.gd" id="1_11ja5"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vqwg"]
-size = Vector2(201, 2)
+size = Vector2(912, 18)
 
 [node name="Laser" type="Node2D" unique_id=1195902502]
-script = ExtResource("1_11ja5")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1305470759]
-offset_right = 201.0
-offset_bottom = 3.0
-color = Color(0.99410206, 0.8473484, 0.7697748, 1)
+offset_right = 911.0
+offset_bottom = 20.0
+color = Color(0.8235294, 0.8509804, 0, 1)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=329994471]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1785749942]
-position = Vector2(100.5, 2)
+position = Vector2(456, 10)
 shape = SubResource("RectangleShape2D_6vqwg")

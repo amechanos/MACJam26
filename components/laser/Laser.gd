@@ -1,7 +1,5 @@
 extends Node2D
 
-class_name Laser
-
 @onready var body = $ColorRect
 
 @export var laser_scene: PackedScene
