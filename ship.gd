@@ -4,6 +4,7 @@ class_name Ship
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
 var health: float = 1000.0
+var max_health: float = 1000.0
 @export var xp: float = 0.0
 var level: int = 0
 
@@ -13,7 +14,7 @@ var level: int = 0
 
 # --- GUN VARIABLES ---
 var gun_list: Array[WeaponBase] = []
-var gun_orientation: Array[float] = [] # Relative rotation offset (in radians) for each gun
+var gun_orientation: Array[float] = []  # Relative rotation offset (in radians) for each gun
 
 var time_since_last_shot: float = 0.0
 var screen_size: Vector2 = Vector2.ZERO
@@ -36,6 +37,9 @@ func _process(delta: float) -> void:
 	orient_gun()
 	fire_gun()
 
+func heal(hp: float) -> void:
+	health = min(health + hp, max_health)
+
 func orient_gun() -> void:
 	for i in range(gun_list.size()):
 		if i < gun_orientation.size() and is_instance_valid(gun_list[i]):
@@ -57,6 +61,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 
 func take_dmg(dmg: float) -> void:
 	health -= dmg
+	print("Player took %d damage! %d health remaining." % [dmg, health])
 	if health <= 0:
 		kill()
 

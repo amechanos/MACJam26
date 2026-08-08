@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://oelxas63f8ln"]
+
+[ext_resource type="Texture2D" uid="uid://c2k3c4t143h4w" path="res://test-texture.png" id="1_6t4ds"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jn2dn"]
+radius = 68.00184
+
+[node name="Explosion" type="Area2D" unique_id=1360258519]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1302402115]
+position = Vector2(0, -0.5)
+shape = SubResource("CircleShape2D_jn2dn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1205031083]
+position = Vector2(0.50000286, 1.9073486e-06)
+scale = Vector2(0.2550201, 0.41423947)
+texture = ExtResource("1_6t4ds")

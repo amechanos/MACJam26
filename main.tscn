@@ -1,12 +1,18 @@
 [gd_scene format=3 uid="uid://bflyx1dn68734"]
 
+[ext_resource type="Script" uid="uid://0quw8h265brg" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://6mgnfr6rop5y" path="res://ship.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://bg1mrfjh3ath2" path="res://enemies/gunner-enemy.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bi5hxi5afh2wd" path="res://enemies/bomber-enemy.tscn" id="3_h2yge"]
 
 [node name="main" type="Node2D" unique_id=1746372729]
+script = ExtResource("1_h2yge")
 
 [node name="ship" parent="." unique_id=1884063870 instance=ExtResource("1_ig7tw")]
 position = Vector2(36, 144)
 
 [node name="GunnerEnemy" parent="." unique_id=1763633671 instance=ExtResource("2_h2yge")]
-position = Vector2(793, 325)
+position = Vector2(809, 205)
+
+[node name="BomberEnemy" parent="." unique_id=116106577 instance=ExtResource("3_h2yge")]
+position = Vector2(800, 389)
