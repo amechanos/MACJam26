@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://vutdt3yg85ti"]
 
+[ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://components/blaster/bullet.gd" id="1_mdvuc"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
 size = Vector2(20, 6)
 
 [node name="Bullet" type="Area2D" unique_id=76994892]
+script = ExtResource("1_mdvuc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=817749319]
 shape = SubResource("RectangleShape2D_f23r7")
