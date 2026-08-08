@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bte3wqv5yukah" path="res://core.gd" id="1_qhobl"]
 
-[node name="core" type="Node2D" unique_id=1841354576]
+[node name="core" type="Control" unique_id=195351709]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_qhobl")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1372793938]
+layout_mode = 0
 offset_right = 50.0
 offset_bottom = 50.0

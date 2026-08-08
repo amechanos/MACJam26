@@ -1,12 +1,37 @@
 [gd_scene format=3 uid="uid://cdd462ielore4"]
 
 [ext_resource type="Script" uid="uid://cnlc1seaukcql" path="res://assembly.gd" id="1_i4ir1"]
-[ext_resource type="PackedScene" uid="uid://or0kq1j5epqw" path="res://core.tscn" id="2_tk35r"]
 
 [node name="assembly" type="Node2D" unique_id=391217497]
 script = ExtResource("1_i4ir1")
 
 [node name="comp_layer" type="Node2D" parent="." unique_id=1874369721]
 
-[node name="core" parent="comp_layer" unique_id=1841354576 instance=ExtResource("2_tk35r")]
-position = Vector2(544, 200)
+[node name="Component1" type="ColorRect" parent="comp_layer" unique_id=608525447]
+offset_left = 121.0
+offset_top = 474.0
+offset_right = 221.0
+offset_bottom = 524.0
+color = Color(1, 1, 1, 0)
+metadata/shape_name = "J"
+
+[node name="Component2" type="ColorRect" parent="comp_layer" unique_id=632394405]
+offset_left = 121.0
+offset_top = 474.0
+offset_right = 221.0
+offset_bottom = 524.0
+color = Color(1, 1, 1, 0)
+metadata/shape_name = "T"
+
+[node name="Component3" type="ColorRect" parent="comp_layer" unique_id=958487847]
+offset_left = 121.0
+offset_top = 474.0
+offset_right = 221.0
+offset_bottom = 524.0
+color = Color(1, 1, 1, 0)
+metadata/shape_name = "Z"
+
+[node name="Core" type="ColorRect" parent="comp_layer" unique_id=368253910]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 1, 1, 0)
