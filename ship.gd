@@ -12,10 +12,13 @@ var level: int = 0
 @export var use_mouse_movement: bool = false  # Toggle in the inspector!
 
 # --- GUN VARIABLES ---
+<<<<<<< Updated upstream
 var gun_list: Array[Gun] = []
 var gun_orientation: Array[float] = [] # Relative rotation offset (in radians) for each gun
 
 var time_since_last_shot: float = 0.0
+=======
+>>>>>>> Stashed changes
 var screen_size: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
@@ -27,22 +30,15 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	move(delta)
-	orient_gun()
-	fire_gun()
-
-func orient_gun() -> void:
-	for i in range(gun_list.size()):
-		if i < gun_orientation.size() and is_instance_valid(gun_list[i]):
-			gun_list[i].global_rotation = global_rotation + gun_orientation[i]
-
-func fire_gun() -> void:
-	for gun in gun_list:
-		if is_instance_valid(gun):
-			gun.fire()
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
+<<<<<<< Updated upstream
 	if area is not Projectile:
 		return
+=======
+	#if area is not BaseProjectile:
+		#return
+>>>>>>> Stashed changes
 	if area.from_player:
 		return
 	
