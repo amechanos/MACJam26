@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://bbsmwogkmeqtl"]
 
-[ext_resource type="Script" uid="uid://dvebik4tatwxp" path="res://gun/gun.gd" id="1_0qvfs"]
-[ext_resource type="PackedScene" uid="uid://b2qw5bspovbr3" path="res://gun/bullet.tscn" id="2_qhldj"]
+[ext_resource type="Script" uid="uid://dvebik4tatwxp" path="res://components/blaster/gun.gd" id="1_v88kk"]
+[ext_resource type="PackedScene" uid="uid://vutdt3yg85ti" path="res://components/blaster/bullet.tscn" id="2_81gjy"]
 
 [node name="bullet" type="Node2D" unique_id=1866178119]
-script = ExtResource("1_0qvfs")
-bullet_scene = ExtResource("2_qhldj")
+script = ExtResource("1_v88kk")
+bullet_scene = ExtResource("2_81gjy")
 metadata/_edit_horizontal_guides_ = [0.0, 10.0, 15.0]
 metadata/_edit_vertical_guides_ = [5.0]
 

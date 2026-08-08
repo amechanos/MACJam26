@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b1y2v3ldjtykr"]
 
-[ext_resource type="Script" uid="uid://cquorce4soot7" path="res://laser_projectile.gd" id="1_11ja5"]
+[ext_resource type="Script" path="res://laser_projectile.gd" id="1_11ja5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vqwg"]
 size = Vector2(201, 2)

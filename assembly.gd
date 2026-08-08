@@ -15,26 +15,21 @@ extends Node2D
 @export var palette_margin: float = 30.0
 @export var palette_spacing: float = 16.0
 
+@onready var core = $comp_layer/Core
 # ============================================================================
 # SHAPE DEFINITIONS
 # ============================================================================
 const SHAPES = {
-	"dot": [[1]],
-	"I": [[1, 1, 1, 1]],
-	"O": [[1, 1],
-		  [1, 1]],
-	"T": [[1, 1, 1],
-		  [0, 1, 0]],
-	"L": [[1, 0],
-		  [1, 0],
-		  [1, 1]],
-	"J": [[0, 1],
-		  [0, 1],
-		  [1, 1]],
-	"S": [[0, 1, 1],
-		  [1, 1, 0]],
-	"Z": [[1, 1, 0],
-		  [0, 1, 1]],
+	"CORE": [[1]],
+	"BLASTER": [[1, 1]],
+	"DRONE": [[1,0],
+		[1, 0],
+		  [1, 0]],
+	"LASER": [[1, 1],
+		  [1, 0]],
+	"CANNON": [[0, 1],
+		  [1, 1],
+		  [0, 1]],
 }
 
 # ============================================================================
@@ -65,7 +60,7 @@ func _ready() -> void:
 	
 	var center_col := grid_cols / 2  # 2 for a 5×5 grid
 	var center_row := grid_rows / 2  # 2 for a 5×5 grid
-	_place_component($comp_layer/Core, center_col, center_row, 0)
+	_place_component(core, center_col, center_row, 0)
 
 func _init_grid() -> void:
 	grid_matrix.clear()
