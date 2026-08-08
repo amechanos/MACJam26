@@ -1,3 +1,12 @@
 [gd_scene format=3 uid="uid://cdd462ielore4"]
 
+[ext_resource type="Script" uid="uid://cnlc1seaukcql" path="res://assembly.gd" id="1_i4ir1"]
+[ext_resource type="PackedScene" uid="uid://or0kq1j5epqw" path="res://core.tscn" id="2_tk35r"]
+
 [node name="assembly" type="Node2D" unique_id=391217497]
+script = ExtResource("1_i4ir1")
+
+[node name="comp_layer" type="Node2D" parent="." unique_id=1874369721]
+
+[node name="core" parent="comp_layer" unique_id=1841354576 instance=ExtResource("2_tk35r")]
+position = Vector2(544, 200)
