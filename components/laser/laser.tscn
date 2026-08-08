@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://t052vym0d7si"]
 
-[ext_resource type="Script" uid="uid://c1lfeoijyq8m6" path="res://Laser.gd" id="1_fn5yt"]
-[ext_resource type="PackedScene" uid="uid://b1y2v3ldjtykr" path="res://laser projectile.tscn" id="2_6vqwg"]
+[ext_resource type="Script" path="res://Laser.gd" id="1_fn5yt"]
+[ext_resource type="PackedScene" path="res://laser projectile.tscn" id="2_6vqwg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vqwg"]
 size = Vector2(22, 12)

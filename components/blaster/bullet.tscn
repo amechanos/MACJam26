@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://b2qw5bspovbr3"]
 
-[ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://gun/bullet.gd" id="1_y4yru"]
+[ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://components/blaster/bullet.gd" id="1_mdvuc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7oki"]
 size = Vector2(5, 15)
 
 [node name="bullet" type="Node2D" unique_id=1002201446]
-script = ExtResource("1_y4yru")
+script = ExtResource("1_mdvuc")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=2110073510]
 
