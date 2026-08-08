@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bbsmwogkmeqtl"]
 
-[ext_resource type="Script" uid="uid://dvebik4tatwxp" path="res://gun.gd" id="1_vk1bi"]
-[ext_resource type="PackedScene" uid="uid://b2qw5bspovbr3" path="res://bullet.tscn" id="2_dk5gl"]
+[ext_resource type="Script" uid="uid://dvebik4tatwxp" path="res://gun/gun.gd" id="1_vk1bi"]
+[ext_resource type="PackedScene" uid="uid://b2qw5bspovbr3" path="res://gun/bullet.tscn" id="2_dk5gl"]
 
 [node name="bullet" type="Node2D" unique_id=1866178119]
 script = ExtResource("1_vk1bi")
@@ -10,6 +10,6 @@ metadata/_edit_horizontal_guides_ = [0.0, 10.0, 15.0]
 metadata/_edit_vertical_guides_ = [5.0]
 
 [node name="body" type="ColorRect" parent="." unique_id=1117955424]
-offset_right = 80.0
-offset_bottom = 34.0
+offset_right = 100.0
+offset_bottom = 50.0
 color = Color(0.601223, 0.601223, 0.60122293, 1)

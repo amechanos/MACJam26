@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b2qw5bspovbr3"]
 
-[ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://bullet.gd" id="1_v7oki"]
+[ext_resource type="Script" uid="uid://bvdnuo7o50pfj" path="res://gun/bullet.gd" id="1_v7oki"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7oki"]
 size = Vector2(5, 15)

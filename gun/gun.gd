@@ -1,11 +1,15 @@
 extends Node2D
 
+class_name Gun
+
 @onready var body = $body
 
 @export var bullet_scene: PackedScene
 @export var bullet_speed: float = 600.0
 @export var fire_rate: float = 0.25
 @export var component_size: Vector2 = Vector2(1, 2)
+
+var component_rotation = [0, 90, 180, 270]
 
 var time_since_last_shot: float = 0.0
 
