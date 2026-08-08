@@ -1,8 +1,9 @@
-extends Node2D
+extends "res://base-projectile.gd"
 
-@export var speed: float = 200.0
+func _ready() -> void:
+	damage = 50.0
+	pierce = 1
 
-var direction: Vector2 = Vector2.RIGHT
-
-func _process(delta: float) -> void:
-	position += direction * speed * delta
+func destroy_projectile():
+	# Explosion logic
+	queue_free()

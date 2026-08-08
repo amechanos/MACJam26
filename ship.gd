@@ -3,7 +3,7 @@ class_name Ship
 
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
-var health: float = 100.0
+var health: float = 1000.0
 @export var xp: float = 0.0
 var level: int = 0
 
@@ -12,7 +12,7 @@ var level: int = 0
 @export var use_mouse_movement: bool = false  # Toggle in the inspector!
 
 # --- GUN VARIABLES ---
-var gun_list: Array[Gun] = []
+var gun_list: Array[Weapon] = []
 var gun_orientation: Array[float] = [] # Relative rotation offset (in radians) for each gun
 
 var time_since_last_shot: float = 0.0
@@ -41,13 +41,13 @@ func fire_gun() -> void:
 			gun.fire()
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
-	if area is not Projectile:
+	if area is not BaseProjectile:
 		return
 	if area.from_player:
 		return
 	
 	take_dmg(area.damage)
-	area.pierce -= 1
+	area.pierce = 0
 
 func take_dmg(dmg: float) -> void:
 	health -= dmg

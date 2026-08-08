@@ -1,21 +1,14 @@
-extends Node2D
-class_name Gun
+extends WeaponBase
+class_name GunBase
 
-@onready var body = get_node_or_null("body")
-
-@export var bullet_scene: PackedScene
-@export var bullet_speed: float = 600.0
-@export var fire_rate: float = 0.25
-@export var component_size: Vector2 = Vector2(1, 2)
-@export var from_player: bool = true
-
-var time_since_last_shot: float = 0.0
-
-func _process(delta: float) -> void:
-	time_since_last_shot += delta
-
-func rotate_cw() -> void:
-	global_rotation += deg_to_rad(90.0)
+func _ready() -> void:
+	fire_rate = 0.5
+	bullet_speed = 300.0
+	
+	if from_player:
+		fire_rate = 0.25
+		bullet_speed = 600.0
+		
 
 func fire() -> void:
 	if time_since_last_shot < fire_rate:

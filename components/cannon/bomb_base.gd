@@ -1,26 +1,19 @@
-extends Node2D
+extends WeaponBase
+class_name BombBase
 
-@export var bomb_scene: PackedScene
-@export var spawn_rate: float = 2.0
+func _ready() -> void:
+	fire_rate = 4.0
+	bullet_speed = 100.0
 
-@onready var body = $ColorRect
+	if from_player:
+		fire_rate = 2.0
+		bullet_speed = 200.0
 
-var time_since_last_bomb: float = 0.0
-
-
-func _process(delta: float) -> void:
-	time_since_last_bomb += delta
-
-	if time_since_last_bomb >= spawn_rate:
-		spawn_bomb()
-		time_since_last_bomb = 0.0
-
-
-func spawn_bomb() -> void:
-	if bomb_scene == null:
+func fire() -> void:
+	if bullet_scene == null:
 		return
 
-	var bomb = bomb_scene.instantiate()
+	var bomb = bullet_scene.instantiate()
 
 	get_tree().current_scene.add_child(bomb)
 
