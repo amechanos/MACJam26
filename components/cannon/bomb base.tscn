@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://chp5baj8doot2"]
 
-[ext_resource type="Script" uid="uid://d28rrhq3r3p1q" path="res://bomb_base.gd" id="1_bjdg2"]
-[ext_resource type="PackedScene" uid="uid://t1mpn65kq5yf" path="res://Bomb.tscn" id="2_6uonr"]
+[ext_resource type="Script" path="res://bomb_base.gd" id="1_bjdg2"]
+[ext_resource type="PackedScene" path="res://Bomb.tscn" id="2_6uonr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ko2n8"]
 size = Vector2(40, 23)

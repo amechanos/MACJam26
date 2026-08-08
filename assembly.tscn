@@ -13,7 +13,7 @@ offset_top = 474.0
 offset_right = 221.0
 offset_bottom = 524.0
 color = Color(1, 1, 1, 0)
-metadata/shape_name = "J"
+metadata/shape_name = "CANNON"
 
 [node name="Component2" type="ColorRect" parent="comp_layer" unique_id=632394405]
 offset_left = 121.0
@@ -21,7 +21,7 @@ offset_top = 474.0
 offset_right = 221.0
 offset_bottom = 524.0
 color = Color(1, 1, 1, 0)
-metadata/shape_name = "T"
+metadata/shape_name = "BLASTER"
 
 [node name="Component3" type="ColorRect" parent="comp_layer" unique_id=958487847]
 offset_left = 121.0
@@ -29,9 +29,12 @@ offset_top = 474.0
 offset_right = 221.0
 offset_bottom = 524.0
 color = Color(1, 1, 1, 0)
-metadata/shape_name = "Z"
+metadata/shape_name = "LASER"
 
-[node name="Core" type="ColorRect" parent="comp_layer" unique_id=368253910]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="core" type="ColorRect" parent="comp_layer" unique_id=606505695]
+offset_left = 121.0
+offset_top = 474.0
+offset_right = 221.0
+offset_bottom = 524.0
 color = Color(1, 1, 1, 0)
+metadata/shape_name = "CORE"

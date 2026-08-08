@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c0qylka2rlp25"]
 
-[ext_resource type="Script" uid="uid://lirr2h80im4q" path="res://drones_base.gd" id="1_1id85"]
+[ext_resource type="Script" path="res://drones_base.gd" id="1_1id85"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iemub"]
 size = Vector2(14, 12)
