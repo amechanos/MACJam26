@@ -19,6 +19,12 @@ var time_since_last_shot: float = 0.0
 var screen_size: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	
+	if container == null:
+		container = self
+	if build_on_ready:
+		build()
+	
 	screen_size = get_viewport_rect().size
 	if hurtbox:
 		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
@@ -66,3 +72,65 @@ func move(delta: float) -> void:
 		
 	position.x = clamp(position.x, 0, screen_size.x * 0.5)
 	position.y = clamp(position.y, 0, screen_size.y)
+	
+#-------------------------------------------------------------------------------
+#BUILDING SHIP VIA MATRIX
+
+@export var container: Node2D
+@export var center_grid: bool = true
+@export var build_on_ready: bool = true
+
+var _built: Array = []
+
+func clear():
+	for c in _built:
+		if is_instance_valid(c) and not c.is_queued_for_deletion():
+			c.queue_free()
+	_built.clear()
+
+func build():
+	clear()
+	
+	if not Global.has_assembly():
+		push_warning("ShipBuilder: No assembly data.")
+		return
+	
+	var cfg = Global.assembly_config
+	var grid_px = Vector2(cfg.grid_cols * cfg.cell_size, cfg.grid_rows * cfg.cell_size)
+	var origin = -grid_px / 2.0 if center_grid else Vector2.ZERO
+	
+	for comp_name in Global.assembly_placements.keys():
+		var data = Global.assembly_placements[comp_name]
+		var components_folder: String = "res://components/%s/" % data.shape_name.to_lower()
+		var path = components_folder.path_join(data.shape_name.to_lower() + ".tscn")
+		
+		if not ResourceLoader.exists(path):
+			push_warning("ShipBuilder: Scene not found: %s" % path)
+			continue
+		
+		var scene: PackedScene = load(path)
+		var inst = scene.instantiate()
+		container.add_child(inst)
+		
+		inst.position = origin + Vector2(data.col, data.row) * cfg.cell_size
+		inst.rotation_degrees = data.rotation * 90
+		inst.name = comp_name
+		
+		_built.append(inst)
+	
+	print("Ship built: %d components" % _built.size())
+
+func export_back_to_global():
+	var placements := {}
+	var cfg = Global.assembly_config
+	for c in _built:
+		var local = c.position
+		var origin = -Vector2(cfg.grid_cols * cfg.cell_size, cfg.grid_rows * cfg.cell_size) / 2.0 if center_grid else Vector2.ZERO
+		var grid_pos = (local - origin) / cfg.cell_size
+		placements[c.name] = {
+			"col": int(round(grid_pos.x)),
+			"row": int(round(grid_pos.y)),
+			"shape_name": c.name,  # or however you map it
+			"rotation": int(round(c.rotation_degrees / 90.0)) % 4
+		}
+	Global.store_assembly(placements, cfg)
