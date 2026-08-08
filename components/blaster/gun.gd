@@ -14,6 +14,7 @@ func fire() -> void:
 	if time_since_last_shot < fire_rate:
 		return
 	if bullet_scene == null:
+		print("Bullet scene is null!")
 		return
 		
 	var new_bullet = bullet_scene.instantiate()

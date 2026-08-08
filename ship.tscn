@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://6mgnfr6rop5y"]
 
 [ext_resource type="Script" uid="uid://c3vosyny4405k" path="res://ship.gd" id="1_4cq66"]
-[ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://components/blaster/gun.tscn" id="2_4cq66"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
 size = Vector2(150, 50)
@@ -19,9 +18,6 @@ offset_top = 1.0
 offset_right = 51.0
 offset_bottom = 51.0
 color = Color(1.5979409e-05, 0.96183914, 0.96301883, 1)
-
-[node name="bullet" parent="." unique_id=1866178119 instance=ExtResource("2_4cq66")]
-position = Vector2(52, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1344374723]
 position = Vector2(76, 26)

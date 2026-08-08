@@ -11,12 +11,7 @@ config_version=5
 [application]
 
 config/name="SpaceJam"
-<<<<<<< HEAD
-config/features=PackedStringArray("4.6", "Mobile")
-=======
-run/main_scene="uid://bflyx1dn68734"
 config/features=PackedStringArray("4.7", "Mobile")
->>>>>>> 792be0663381c7fb2c531ff3e902f13ba72af695
 config/icon="res://icon.svg"
 
 [display]

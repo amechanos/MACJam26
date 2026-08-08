@@ -12,7 +12,7 @@ var level: int = 0
 @export var use_mouse_movement: bool = false  # Toggle in the inspector!
 
 # --- GUN VARIABLES ---
-var gun_list: Array[Weapon] = []
+var gun_list: Array[WeaponBase] = []
 var gun_orientation: Array[float] = [] # Relative rotation offset (in radians) for each gun
 
 var time_since_last_shot: float = 0.0
