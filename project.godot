@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="SpaceJam"
+run/main_scene="uid://bflyx1dn68734"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
@@ -18,6 +19,10 @@ config/icon="res://icon.svg"
 
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
+
+[dotnet]
+
+project/assembly_name="SpaceJam"
 
 [input]
 
