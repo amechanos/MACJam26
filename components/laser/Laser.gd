@@ -1,7 +1,5 @@
 extends Node2D
 
-class_name Laser
-
 @onready var body = $ColorRect
 
 @export var laser_scene: PackedScene
@@ -28,8 +26,8 @@ func create_laser() -> void:
 	add_child(current_laser)
 
 	current_laser.position = Vector2(
-		body.size.x * 0.67,
-		body.size.y / 2
+		body.size.x,
+		body.size.y / 2 - 9
 	)
 	$Timer.start(5)
 

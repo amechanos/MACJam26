@@ -11,12 +11,13 @@ func _ready() -> void:
 		return
 		
 	var gun_instance = gun_scene.instantiate()
-	if gun_instance is GunBase:
-		gun_instance.from_player = false
-		add_child(gun_instance)
-		
-		gun_list.append(gun_instance)
-		gun_orientation.append(0.0) # Aligned with enemy orientation
+	if gun_instance is not WeaponBase:
+		return
+	gun_instance.from_player = false
+	add_child(gun_instance)
+	
+	gun_list.append(gun_instance)
+	gun_orientation.append(0.0) # Aligned with enemy orientation
 
 func _process(delta: float) -> void:
 	super._process(delta)

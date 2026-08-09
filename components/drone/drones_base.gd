@@ -1,7 +1,7 @@
 extends Node2D
 
-@export var radius: float = 100.0
-@export var orbit_speed: float = 5
+@export var radius: float = 225.0
+@export var orbit_speed: float = 2
 
 var angle: float = 0.0
 

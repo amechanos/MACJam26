@@ -1,17 +1,19 @@
 [gd_scene format=3 uid="uid://t052vym0d7si"]
 
-[ext_resource type="Script" uid="uid://c1lfeoijyq8m6" path="res://components/laser/laser.gd" id="1_unu6b"]
+[ext_resource type="Script" uid="uid://2l06ldpq8t7m" path="res://components/laser/laser.gd" id="1_unu6b"]
+[ext_resource type="PackedScene" uid="uid://b1y2v3ldjtykr" path="res://components/laser/laser projectile.tscn" id="2_6fpsk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vqwg"]
-size = Vector2(22, 12)
+size = Vector2(49, 47)
 
 [node name="Laser" type="Node2D" unique_id=1195902502]
 script = ExtResource("1_unu6b")
+laser_scene = ExtResource("2_6fpsk")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=329994471]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1785749942]
-position = Vector2(14, 8)
+position = Vector2(24.5, 25.5)
 shape = SubResource("RectangleShape2D_6vqwg")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1305470759]

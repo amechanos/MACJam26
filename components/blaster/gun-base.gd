@@ -2,16 +2,18 @@ extends WeaponBase
 class_name GunBase
 
 func _ready() -> void:
-	fire_rate = 0.5
+	fire_delay = 0.5
 	bullet_speed = 300.0
+	fire_delay_jitter = Vector2(-0.05, 0.05)
 	
 	if from_player:
-		fire_rate = 0.25
+		fire_delay = 0.25
 		bullet_speed = 600.0
+		fire_delay_jitter = Vector2(0, 0)
 		
 
 func fire() -> void:
-	if time_since_last_shot < fire_rate:
+	if time_to_next_shot > 0:
 		return
 	if bullet_scene == null:
 		print("Bullet scene is null!")
@@ -21,15 +23,13 @@ func fire() -> void:
 	new_bullet.from_player = from_player
 	
 	# Calculate muzzle spawn offset based on gun body size (if present)
-	var spawn_offset: Vector2 = Vector2.ZERO
-	if body and "size" in body:
-		spawn_offset = Vector2(body.size.x * 0.67, body.size.y * 0.5)
+	var spawn_offset = Vector2(body.size.x * 0.67, body.size.y * 0.5)
 	
 	# Rotate local offset by global_rotation so bullets spawn from gun tip regardless of orientation
 	new_bullet.global_position = global_position + spawn_offset.rotated(global_rotation)
 	
 	get_tree().root.add_child(new_bullet)
-	time_since_last_shot = 0.0
+	time_to_next_shot = fire_delay + randf_range(fire_delay_jitter[0], fire_delay_jitter[1])
 	
 	# Facing vector pointing in the gun's global rotation direction
 	var direction: Vector2 = Vector2.RIGHT.rotated(global_rotation)

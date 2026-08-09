@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bi5hxi5afh2wd"]
+
+[ext_resource type="Script" uid="uid://5if7l4ibf6wi" path="res://enemies/bomber-enemy.gd" id="1_4ndea"]
+[ext_resource type="PackedScene" uid="uid://d26hfcigfiwsp" path="res://components/cannon/bomb-base-2.tscn" id="2_v5soo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v5soo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_umcee"]
+size = Vector2(40, 41)
+
+[node name="BomberEnemy" type="CharacterBody2D" unique_id=116106577]
+script = ExtResource("1_4ndea")
+cannon_scene = ExtResource("2_v5soo")
+metadata/_custom_type_script = "uid://d3v538vr33s2g"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1183476309]
+shape = SubResource("RectangleShape2D_v5soo")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1018036494]
+
+[node name="hitbox" type="CollisionShape2D" parent="Area2D" unique_id=1657249998]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_umcee")
+debug_color = Color(0.6633702, 0.44787687, 0.6659709, 0.41960785)
+
+[node name="ColorRect" type="ColorRect" parent="Area2D" unique_id=175926769]
+offset_left = -22.0
+offset_top = -23.0
+offset_right = 23.0
+offset_bottom = 23.0
+metadata/_edit_use_anchors_ = true

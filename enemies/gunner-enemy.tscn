@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bg1mrfjh3ath2"]
 
 [ext_resource type="Script" uid="uid://cnomm4bh3kj5l" path="res://enemies/gunner-enemy.gd" id="1_wuttg"]
-[ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://components/blaster/gun.tscn" id="2_1rxco"]
+[ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://components/blaster/gun-base.tscn" id="2_1rxco"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1rxco"]
 

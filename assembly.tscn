@@ -7,7 +7,6 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_i4ir1")
 palette_spacing = 256.0
-palette_horizontal_gap = 256.0
 
 [node name="comp_layer" type="Control" parent="." unique_id=713644149]
 anchors_preset = 0

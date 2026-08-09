@@ -1,18 +1,22 @@
 [gd_scene format=3 uid="uid://c0qylka2rlp25"]
 
+[ext_resource type="Script" uid="uid://lirr2h80im4q" path="res://components/drone/drones_base.gd" id="1_tpdaj"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iemub"]
 size = Vector2(14, 12)
 
 [node name="Node2D" type="Node2D" unique_id=1721143968]
+script = ExtResource("1_tpdaj")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1166876170]
-offset_left = 1.0
-offset_right = 41.0
-offset_bottom = 40.0
+offset_left = -25.0
+offset_top = -75.0
+offset_right = 25.0
+offset_bottom = 75.0
 color = Color(0.7699586, 0.72857714, 0.96585494, 1)
 
 [node name="proj" type="StaticBody2D" parent="." unique_id=1538770654]
-position = Vector2(-84, -88)
+position = Vector2(0, -229)
 
 [node name="ColorRect2" type="ColorRect" parent="proj" unique_id=1103808776]
 offset_left = -5.0
