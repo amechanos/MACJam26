@@ -173,3 +173,8 @@ func build():
 func defeated_enemy(enemy: CharacterBody2D):
 	xp += enemy.xp
 	print("Gained %d xp" % enemy.xp)
+	if xp >= 1:
+		level += 1
+		xp -= 1
+		# Level-up logic
+		get_tree().change_scene_to_file("assembly/assembly.tscn")
