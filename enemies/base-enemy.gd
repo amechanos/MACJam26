@@ -69,10 +69,22 @@ func _ready() -> void:
 	_reset_move_timer()
 	_pick_new_target()
 
+func teleport_x(dest: float) -> void:
+	global_position.x = dest
+	target_pos.x = dest
+
+func teleport_y(dest: float) -> void:
+	global_position.y = dest
+	target_pos.y = dest
+
 func _process(delta: float) -> void:
+	# Bound the enemy to the screen
 	if global_position.x < 0:
-		global_position.x = screen_size.x
-		target_pos.x = screen_size.x
+		teleport_x(screen_size.x)
+	if global_position.y < 0:
+		teleport_y(screen_size.y)
+	elif global_position.y > screen_size.y:
+		teleport_y(screen_size.y)
 	
 	move(target_pos, delta)
 	
