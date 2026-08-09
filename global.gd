@@ -7,7 +7,7 @@ const SHAPES = {
 	#"DRONE":   [[1],
 				#[1],
 				#[1]],
-	"BLASTER": [[1, 1]],
+	"GUN-BASE": [[1, 1]],
 	"BOMB-BASE-2":  [[0, 1],
 				[1, 1],
 				[0, 1]]

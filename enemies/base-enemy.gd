@@ -5,7 +5,7 @@ signal dead
 
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
-var health: float = 100.0
+var health: float = 200.0
 var speed: float = 3.0
 var scroll_speed: float = 60.0
 var target_pos: Vector2 = Vector2.ZERO

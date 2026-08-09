@@ -1,6 +1,7 @@
 extends BaseEnemy
 class_name GunnerEnemy
 
+@onready var hit_sfx: AudioStreamPlayer2D = $SelfHitSFX
 @export var gun_scene: PackedScene
 
 func _ready() -> void:
@@ -15,10 +16,6 @@ func _ready() -> void:
 		print("gun_instance is not a weapon!")
 		return
 	
-	# Hide the gun
-	var body = gun_instance.get_node_or_null("body") as ColorRect
-	if body: body.hide()
-	
 	gun_instance.from_player = false
 	add_child(gun_instance)
 	
@@ -28,3 +25,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	fire_gun()
+
+func take_dmg(dmg: float) -> void:
+	hit_sfx.play()
+	super.take_dmg(dmg)

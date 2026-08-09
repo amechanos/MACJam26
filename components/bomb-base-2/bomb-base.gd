@@ -1,29 +1,32 @@
 extends WeaponBase
 class_name BombBase
 
+@onready var fire_sfx: AudioStreamPlayer2D = $FireSFX
+@onready var voice_lines = [$voice1, $voice2, $voice3]
+
 func _ready() -> void:
 	fire_delay = 4.0
-	super_fire_delay = 12.0
+	super_fire_delay = 8.0
 	bullet_speed = 100.0
 	fire_delay_jitter = Vector2(-2.0, 1.0)
-	super_fire_delay_jitter = Vector2(-3.0, 3.0)
+	super_fire_delay_jitter = Vector2(-2.0, 3.0)
 
 	if from_player:
 		fire_delay = 2.0
-		super_fire_delay = 999999
 		bullet_speed = 200.0
 		fire_delay_jitter = Vector2.ZERO
-		super_fire_delay_jitter = Vector2.ZERO
 
 func fire() -> void:
-	super_fire()
+	if not from_player:
+		super_fire()
 	
 	if time_to_next_shot > 0:
 		return
-		
 	if bullet_scene == null:
 		print("Bullet not found!")
 		return
+	
+	fire_sfx.play()
 
 	var new_bomb = bullet_scene.instantiate()
 	new_bomb.from_player = from_player
@@ -47,6 +50,9 @@ func super_fire() -> void:
 	if bullet_scene == null:
 		print("Bullet not found!")
 		return
+	
+	fire_sfx.play()
+	voice_lines.pick_random().play()
 	
 	var bombs = [bullet_scene.instantiate(), bullet_scene.instantiate()]
 	for bomb in bombs:

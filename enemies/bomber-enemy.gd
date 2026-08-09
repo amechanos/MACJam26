@@ -2,9 +2,10 @@ extends BaseEnemy
 class_name BomberEnemy
 
 @export var cannon_scene: PackedScene
+@onready var hit_sfx: AudioStreamPlayer2D = $SelfHitSFX
 
 func _ready() -> void:
-	health = 200.0
+	health = 300.0
 	speed = 1.0
 	min_interval = 2.0
 	max_interval = 4.0
@@ -41,3 +42,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	fire_gun()
+
+func take_dmg(dmg: float) -> void:
+	hit_sfx.play()
+	super.take_dmg(dmg)

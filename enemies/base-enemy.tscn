@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b4hxh8bgsa0wq"]
 
 [ext_resource type="Script" uid="uid://d3v538vr33s2g" path="res://enemies/base-enemy.gd" id="1_a2ulj"]
+[ext_resource type="AudioStream" uid="uid://ddaj4cgokwqkm" path="res://sounds/projectile/Enemy-Hit.wav" id="2_5h5r4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
 
@@ -26,6 +27,9 @@ offset_top = -23.0
 offset_right = 23.0
 offset_bottom = 23.0
 metadata/_edit_use_anchors_ = true
+
+[node name="SelfHitSFX" type="AudioStreamPlayer2D" parent="." unique_id=1186111169]
+stream = ExtResource("2_5h5r4")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_shape_entered" from="Area2D" to="." method="_on_area_2d_area_shape_entered"]

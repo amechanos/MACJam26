@@ -1,16 +1,18 @@
 [gd_scene format=3 uid="uid://bg1mrfjh3ath2"]
 
 [ext_resource type="Script" uid="uid://cnomm4bh3kj5l" path="res://enemies/gunner-enemy.gd" id="1_wuttg"]
-[ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://components/blaster/gun-base.tscn" id="2_1rxco"]
+[ext_resource type="PackedScene" uid="uid://bbsmwogkmeqtl" path="res://components/gun-base/gun-base.tscn" id="2_3vwvx"]
+[ext_resource type="Texture2D" uid="uid://efefh73rrqp8" path="res://art/enemymobs/enemy2.png" id="3_3vwvx"]
+[ext_resource type="AudioStream" uid="uid://ddaj4cgokwqkm" path="res://sounds/projectile/Enemy-Hit.wav" id="4_83hr4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1rxco"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3vwvx"]
-size = Vector2(40, 41)
+size = Vector2(61, 60)
 
 [node name="GunnerEnemy" type="CharacterBody2D" unique_id=1763633671]
 script = ExtResource("1_wuttg")
-gun_scene = ExtResource("2_1rxco")
+gun_scene = ExtResource("2_3vwvx")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1772677363]
 shape = SubResource("RectangleShape2D_1rxco")
@@ -18,13 +20,16 @@ shape = SubResource("RectangleShape2D_1rxco")
 [node name="Area2D" type="Area2D" parent="." unique_id=1763641983]
 
 [node name="hitbox" type="CollisionShape2D" parent="Area2D" unique_id=1526052569]
-position = Vector2(0, 0.5)
+position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_3vwvx")
 debug_color = Color(0.6633702, 0.44787687, 0.6659709, 0.41960785)
 
-[node name="ColorRect" type="ColorRect" parent="Area2D" unique_id=2131392185]
-offset_left = -22.0
-offset_top = -23.0
-offset_right = 23.0
-offset_bottom = 23.0
-metadata/_edit_use_anchors_ = true
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=368060803]
+position = Vector2(2.026558e-06, 1.192093e-06)
+rotation = 1.5707964
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_3vwvx")
+
+[node name="SelfHitSFX" type="AudioStreamPlayer2D" parent="." unique_id=143786999]
+stream = ExtResource("4_83hr4")
+volume_db = 10.0

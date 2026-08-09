@@ -2,6 +2,11 @@
 
 [ext_resource type="Script" uid="uid://d28rrhq3r3p1q" path="res://components/bomb-base-2/bomb-base.gd" id="1_bjdg2"]
 [ext_resource type="PackedScene" uid="uid://ds4d6k7e6mwmx" path="res://components/bomb-base-2/bomb.tscn" id="2_5j1xy"]
+[ext_resource type="Texture2D" uid="uid://bko18ka1q7gos" path="res://art/weapons/chonkblaster.png" id="3_oqgrk"]
+[ext_resource type="AudioStream" uid="uid://cbalmsjhcx00q" path="res://sounds/bomber/Voice-Crush.wav" id="5_yaldh"]
+[ext_resource type="AudioStream" uid="uid://b2yxcb22lk785" path="res://sounds/bomber/Voice-Destroy.wav" id="6_imu3r"]
+[ext_resource type="AudioStream" uid="uid://d3fwmu2wqlf3b" path="res://sounds/gunner/Blaster.wav" id="7_hy3sm"]
+[ext_resource type="AudioStream" uid="uid://d1w0qol0tt4e5" path="res://sounds/bomber/Voice-Die.wav" id="7_m7k2i"]
 
 [node name="BombBase2" type="Node2D" unique_id=1213972145]
 script = ExtResource("1_bjdg2")
@@ -17,3 +22,24 @@ offset_top = -50.0
 offset_right = 50.0
 offset_bottom = 100.0
 color = Color(0.6364024, 0.5471629, 0.20091236, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1881856630]
+position = Vector2(-4.482827, 24.099285)
+rotation = 1.5707964
+scale = Vector2(4.459928, 6.0222936)
+texture = ExtResource("3_oqgrk")
+
+[node name="voice1" type="AudioStreamPlayer2D" parent="." unique_id=462536023]
+stream = ExtResource("5_yaldh")
+volume_db = 7.5
+
+[node name="voice2" type="AudioStreamPlayer2D" parent="." unique_id=1014170876]
+stream = ExtResource("6_imu3r")
+volume_db = 7.5
+
+[node name="voice3" type="AudioStreamPlayer2D" parent="." unique_id=334252447]
+stream = ExtResource("7_m7k2i")
+volume_db = 7.5
+
+[node name="FireSFX" type="AudioStreamPlayer2D" parent="." unique_id=1305647965]
+stream = ExtResource("7_hy3sm")

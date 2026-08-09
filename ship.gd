@@ -3,9 +3,9 @@ class_name Ship
 
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
-var health: float = 1000.0
-var max_health: float = 1000.0
-var health_regen: float = 10.0
+var health: float = 250.0
+@export var max_health: float = 250.0
+var health_regen: float = 5.0
 var health_regen_interval: float = 1.0  # Seconds
 var time_since_last_regen: float = 0.0
 var is_dead: bool = false
@@ -56,6 +56,7 @@ func heal(hp: float) -> void:
 	var healed_amount = health - old_health
 	if healed_amount != 0:
 		dmg_number(health - old_health, Color.LIME_GREEN)
+		print("Healed %d hp" % healed_amount)
 
 func orient_gun() -> void:
 	for i in range(gun_list.size()):
@@ -109,6 +110,7 @@ func take_dmg(dmg: float) -> void:
 	health -= dmg
 	print("Player took %d damage! %d health remaining." % [dmg, health])
 	dmg_number(dmg, Color.FIREBRICK)
+	# Damage sound
 	
 	if health <= 0:
 		kill()
@@ -191,8 +193,12 @@ func defeated_enemy(enemy: CharacterBody2D):
 		return
 	xp += enemy.xp
 	print("Gained %d xp" % enemy.xp)
-	if xp >= 1:
-		level += 1
-		xp -= 1
-		# Level-up logic
-		get_tree().change_scene_to_file("assembly/assembly.tscn")
+	if xp < 10:
+		return
+
+	# Level-up logic
+	level += 1
+	xp -= 10
+	health_regen += 1
+	max_health += 50
+	get_tree().change_scene_to_file("res://assembly/assembly.tscn")

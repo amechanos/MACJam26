@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://5if7l4ibf6wi" path="res://enemies/bomber-enemy.gd" id="1_4ndea"]
 [ext_resource type="PackedScene" uid="uid://d26hfcigfiwsp" path="res://components/bomb-base-2/bomb-base-2.tscn" id="2_v5soo"]
-[ext_resource type="Texture2D" uid="uid://efefh73rrqp8" path="res://art/enemymobs/enemy2.png" id="3_umcee"]
+[ext_resource type="Texture2D" uid="uid://c2ig443plbhks" path="res://art/enemymobs/enemy3.png" id="3_umcee"]
+[ext_resource type="AudioStream" uid="uid://ddaj4cgokwqkm" path="res://sounds/projectile/Enemy-Hit.wav" id="4_dbfew"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5soo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_umcee"]
-size = Vector2(51, 49)
+size = Vector2(101, 46.000004)
 
 [node name="BomberEnemy" type="CharacterBody2D" unique_id=116106577]
 script = ExtResource("1_4ndea")
@@ -20,11 +21,17 @@ shape = SubResource("RectangleShape2D_v5soo")
 [node name="Area2D" type="Area2D" parent="." unique_id=1018036494]
 
 [node name="hitbox" type="CollisionShape2D" parent="Area2D" unique_id=1657249998]
-position = Vector2(-1.5, 0.5)
+position = Vector2(-9.536743e-07, 0.5)
+rotation = 1.5707964
 shape = SubResource("RectangleShape2D_umcee")
 debug_color = Color(0.6633702, 0.44787687, 0.6659709, 0.41960785)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1366277161]
-position = Vector2(-1, 1)
-scale = Vector2(0.421875, 0.4140625)
+position = Vector2(-9.536743e-07, 0)
+rotation = 1.5707964
+scale = Vector2(0.8265176, 0.81218237)
 texture = ExtResource("3_umcee")
+
+[node name="SelfHitSFX" type="AudioStreamPlayer2D" parent="." unique_id=67968576]
+stream = ExtResource("4_dbfew")
+volume_db = 10.0

@@ -83,7 +83,7 @@ func _on_enemy_defeated(enemy: CharacterBody2D) -> void:
 	
 	if active_enemies <= 0:
 		if ship.has_method("heal"):
-			ship.heal(99999)
+			ship.heal(ship.max_health * 0.25)  # Heal 25% hp every new wave
 		var tree = get_tree()
 		if tree:
 			tree.create_timer(1.5).timeout.connect(start_next_wave)

@@ -2,9 +2,29 @@
 
 [ext_resource type="Script" uid="uid://0quw8h265brg" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://6mgnfr6rop5y" path="res://ship.tscn" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://175u4tthpnlb" path="res://art/backgrounds/gamebackground.png" id="3_h2yge"]
+[ext_resource type="AudioStream" uid="uid://bhfje2tsifva7" path="res://sounds/bgm/main.wav" id="4_1bvp3"]
+[ext_resource type="AudioStream" uid="uid://c6uw57tdbnfb8" path="res://sounds/Thruster.wav" id="5_lquwl"]
 
 [node name="main" type="Node2D" unique_id=1746372729]
 script = ExtResource("1_h2yge")
 
 [node name="ship" parent="." unique_id=1884063870 instance=ExtResource("1_ig7tw")]
 position = Vector2(121, 287)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1798750632]
+modulate = Color(1, 1, 1, 0.5019608)
+z_index = -999
+position = Vector2(580, 321.00003)
+scale = Vector2(0.62, 0.62)
+texture = ExtResource("3_h2yge")
+
+[node name="BGM" type="AudioStreamPlayer2D" parent="." unique_id=951212399]
+stream = ExtResource("4_1bvp3")
+volume_db = -2.5
+autoplay = true
+
+[node name="Ambience" type="AudioStreamPlayer2D" parent="." unique_id=883028105]
+stream = ExtResource("5_lquwl")
+volume_db = 10.0
+autoplay = true

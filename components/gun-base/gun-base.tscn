@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bbsmwogkmeqtl"]
+
+[ext_resource type="Script" uid="uid://dvebik4tatwxp" path="res://components/gun-base/gun-base.gd" id="1_klxsa"]
+[ext_resource type="PackedScene" uid="uid://vutdt3yg85ti" path="res://components/gun-base/bullet.tscn" id="2_0bh5r"]
+[ext_resource type="Texture2D" uid="uid://c035p853kb1mi" path="res://art/weapons/blaster.png" id="3_0bh5r"]
+[ext_resource type="AudioStream" uid="uid://d3fwmu2wqlf3b" path="res://sounds/gunner/Blaster.wav" id="4_678j0"]
+[ext_resource type="AudioStream" uid="uid://ch41ngpqgsso5" path="res://sounds/gunner/Voice-Die-die-die.wav" id="5_3x500"]
+[ext_resource type="AudioStream" uid="uid://cpdhf1cdhb1cf" path="res://sounds/gunner/Voice-Dodge-this.wav" id="6_47al7"]
+[ext_resource type="AudioStream" uid="uid://d2sbnechgg3es" path="res://sounds/gunner/Voice-Crush-alt.wav" id="7_47al7"]
+
+[node name="GunBase" type="Node2D" unique_id=1866178119]
+script = ExtResource("1_klxsa")
+bullet_scene = ExtResource("2_0bh5r")
+metadata/_edit_horizontal_guides_ = [0.0, 10.0, 15.0]
+metadata/_edit_vertical_guides_ = [5.0]
+
+[node name="body" type="ColorRect" parent="." unique_id=1117955424]
+visible = false
+offset_left = -50.0
+offset_top = -24.0
+offset_right = 50.0
+offset_bottom = 26.0
+color = Color(0.601223, 0.601223, 0.60122293, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1560070397]
+rotation = 1.5707964
+scale = Vector2(4.5, 4.5)
+texture = ExtResource("3_0bh5r")
+
+[node name="FireSFX" type="AudioStreamPlayer2D" parent="." unique_id=1207796711]
+stream = ExtResource("4_678j0")
+volume_db = -5.0
+
+[node name="voice1" type="AudioStreamPlayer2D" parent="." unique_id=496383161]
+stream = ExtResource("5_3x500")
+volume_db = 5.0
+
+[node name="voice2" type="AudioStreamPlayer2D" parent="." unique_id=701510999]
+stream = ExtResource("6_47al7")
+volume_db = 5.0
+
+[node name="voice3" type="AudioStreamPlayer2D" parent="." unique_id=1162017075]
+stream = ExtResource("7_47al7")
+volume_db = 7.5
