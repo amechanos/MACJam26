@@ -5,6 +5,10 @@ class_name Ship
 
 var health: float = 1000.0
 var max_health: float = 1000.0
+var health_regen: float = 10.0
+var health_regen_interval: float = 1.0  # Seconds
+var time_since_last_regen: float = 0.0
+
 @export var xp: float = 0.0
 @export var level: int = 0
 
@@ -16,11 +20,9 @@ var max_health: float = 1000.0
 var gun_list: Array[WeaponBase] = []
 var gun_orientation: Array[float] = []  # Relative rotation offset (in radians) for each gun
 
-var time_since_last_shot: float = 0.0
 var screen_size: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	
 	if container == null:
 		container = self
 	if build_on_ready:
@@ -33,12 +35,21 @@ func _ready() -> void:
 		push_warning("Ship: 'Area2D' child node not found on " + name)
 
 func _process(delta: float) -> void:
+	time_since_last_regen += delta
+	if time_since_last_regen >= health_regen_interval:
+		heal(health_regen)
+		time_since_last_regen = 0.0
+	
 	move(delta)
 	orient_gun()
 	fire_gun()
 
 func heal(hp: float) -> void:
+	var old_health = health
 	health = min(health + hp, max_health)
+	var healed_amount = health - old_health
+	if healed_amount != 0:
+		dmg_number(health - old_health, Color.LIME_GREEN)
 
 func orient_gun() -> void:
 	for i in range(gun_list.size()):
@@ -59,9 +70,40 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 	take_dmg(area.damage)
 	area.pierce = 0
 
+# Exact same as in base-enemy.gd
+func dmg_number(dmg: float, color) -> void:
+	# Spawn Floating Damage Label
+	var label := Label.new()
+	label.text = str(round(dmg))
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.global_position = global_position
+	label.modulate = color
+	
+	# Add to main scene tree so it remains visible even if enemy dies
+	var scene_root = get_tree().current_scene
+	if scene_root == null:
+		scene_root = get_tree().root
+	scene_root.add_child(label)
+	
+	# Center pivot offset so scaling expands from label center
+	label.pivot_offset = label.size * 0.5
+	label.scale = Vector2(0.5, 0.5)
+	
+	# Sequentially animate over 1 second total
+	var tween := label.create_tween()
+	# Phase 1 (0.0s - 0.5s): Slowly enlarge
+	tween.tween_property(label, "scale", Vector2(1.5, 1.5), 0.5)
+	# Phase 2 (0.5s - 1.0s): Fade to transparent
+	tween.tween_property(label, "modulate:a", 0.0, 0.5)
+	# Cleanup label node upon completion
+	tween.tween_callback(label.queue_free)
+
 func take_dmg(dmg: float) -> void:
 	health -= dmg
 	print("Player took %d damage! %d health remaining." % [dmg, health])
+	dmg_number(dmg, Color.FIREBRICK)
+	
 	if health <= 0:
 		kill()
 
