@@ -8,3 +8,5 @@ script = ExtResource("1_h2yge")
 
 [node name="ship" parent="." unique_id=1884063870 instance=ExtResource("1_ig7tw")]
 position = Vector2(121, 287)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=836035603]

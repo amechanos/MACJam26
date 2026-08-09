@@ -6,7 +6,7 @@ class_name Ship
 var health: float = 1000.0
 var max_health: float = 1000.0
 @export var xp: float = 0.0
-var level: int = 0
+@export var level: int = 0
 
 # --- MOVEMENT VARIABLES ---
 @export var move_speed: float = 400.0
@@ -139,3 +139,7 @@ func export_back_to_global():
 			"rotation": int(round(c.rotation_degrees / 90.0)) % 4
 		}
 	Global.store_assembly(placements, cfg)
+
+func defeated_enemy(enemy: CharacterBody2D):
+	xp += enemy.xp
+	print("Gained %d xp" % enemy.xp)

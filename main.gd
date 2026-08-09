@@ -1,12 +1,12 @@
 extends Node
 
 var wave_number: int = 0
-var base_wave_cost: int = 20
+var base_wave_cost: int = 100
 var cost_scaling: int = 10
 var active_enemies: int = 0
 @onready var ship: Node2D = $ship
 
-# Preloading scenes based on the main.tscn provided[cite: 7]
+# Preloading scenes based on main.tscn
 var enemy_scenes: Dictionary = {
 	"gunner": preload("res://enemies/gunner-enemy.tscn"),
 	"bomber": preload("res://enemies/bomber-enemy.tscn")
@@ -60,23 +60,29 @@ func spawn_enemy(enemy_name: String) -> void:
 		push_error("Enemy type not found: " + enemy_name)
 		return
 		
-	var enemy_instance: Node2D = enemy_scenes[enemy_name].instantiate()
+	var enemy_instance: CharacterBody2D = enemy_scenes[enemy_name].instantiate()
 	
 	# Track active enemies for wave progression
 	active_enemies += 1
 	
-	# BaseEnemy calls queue_free() upon death.
-	# tree_exited is a built-in signal that fires when the node is freed.
-	enemy_instance.tree_exited.connect(_on_enemy_defeated)
+	# Bind the enemy instance to the tree_exited signal callback
+	enemy_instance.tree_exited.connect(_on_enemy_defeated.bind(enemy_instance))
 	
 	# Add the enemy to the scene tree
 	add_child(enemy_instance)
 
-func _on_enemy_defeated() -> void:
+func _on_enemy_defeated(enemy: CharacterBody2D) -> void:
+	if not is_instance_valid(ship):
+		print("Invalid ship instance!")
+		return
+
+	if ship.has_method("defeated_enemy"):
+		ship.defeated_enemy(enemy)
 	active_enemies -= 1
 	
 	# Check if the wave is fully cleared
 	if active_enemies <= 0:
-		ship.heal(99999)
+		if ship.has_method("heal"):
+			ship.heal(99999)
 		# Small buffer delay before starting the next wave
 		get_tree().create_timer(1.5).timeout.connect(start_next_wave)
