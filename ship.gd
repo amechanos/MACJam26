@@ -10,6 +10,11 @@ var health_regen_interval: float = 1.0  # Seconds
 var time_since_last_regen: float = 0.0
 var is_dead: bool = false
 
+# HP/XP bars
+var ui_layer: CanvasLayer
+var hp_bar: ProgressBar
+var xp_bar: ProgressBar
+
 @export var xp: float = 0.0
 @export var level: int = 0
 
@@ -28,7 +33,7 @@ func _ready() -> void:
 		container = self
 	if build_on_ready:
 		build()
-	
+
 	screen_size = get_viewport_rect().size
 	if hurtbox:
 		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
@@ -43,7 +48,7 @@ func _process(delta: float) -> void:
 	if time_since_last_regen >= health_regen_interval:
 		heal(health_regen)
 		time_since_last_regen = 0.0
-	
+
 	move(delta)
 	orient_gun()
 	fire_gun()
@@ -75,7 +80,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 		return
 	if area.from_player:
 		return
-	
+
 	take_dmg(area.damage)
 	area.pierce = 0
 
@@ -89,15 +94,15 @@ func dmg_number(dmg: float, color) -> void:
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.global_position = global_position
 	label.modulate = color
-	
+
 	var scene_root = get_tree().current_scene
 	if scene_root == null:
 		scene_root = get_tree().root
 	scene_root.add_child(label)
-	
+
 	label.pivot_offset = label.size * 0.5
 	label.scale = Vector2(0.5, 0.5)
-	
+
 	var tween := label.create_tween()
 	tween.tween_property(label, "scale", Vector2(1.5, 1.5), 0.5)
 	tween.tween_property(label, "modulate:a", 0.0, 0.5)
@@ -110,8 +115,7 @@ func take_dmg(dmg: float) -> void:
 	health -= dmg
 	print("Player took %d damage! %d health remaining." % [dmg, health])
 	dmg_number(dmg, Color.FIREBRICK)
-	# Damage sound
-	
+
 	if health <= 0:
 		kill()
 
@@ -134,10 +138,10 @@ func move(delta: float) -> void:
 	if use_mouse_movement:
 		var target_pos = get_global_mouse_position()
 		position = position.lerp(target_pos, 20 * delta)
-		
+
 	position.x = clamp(position.x, 0, screen_size.x * 0.5)
 	position.y = clamp(position.y, 0, screen_size.y)
-	
+
 #-------------------------------------------------------------------------------
 #BUILDING SHIP VIA MATRIX
 
@@ -155,37 +159,37 @@ func clear():
 
 func build():
 	clear()
-	
+
 	if not Global.has_assembly():
 		push_warning("ShipBuilder: No assembly data.")
 		return
-	
+
 	var cfg = Global.assembly_config
 	var grid_px = Vector2(cfg.grid_cols * cfg.cell_size, cfg.grid_rows * cfg.cell_size)
 	var origin = -grid_px / 2.0 if center_grid else Vector2.ZERO
-	
+
 	for comp_name in Global.assembly_placements.keys():
 		var data = Global.assembly_placements[comp_name]
 		var components_folder: String = "res://components/%s/" % data.shape_name.to_lower()
 		var path = components_folder.path_join(data.shape_name.to_lower() + ".tscn")
-		
+
 		if not ResourceLoader.exists(path):
 			push_warning("ShipBuilder: Scene not found: %s" % path)
 			continue
-		
+
 		var scene: PackedScene = load(path)
 		var inst = scene.instantiate()
 		container.add_child(inst)
-		
+
 		inst.position = origin + Vector2(data.col, data.row) * cfg.cell_size
 		inst.rotation_degrees = data.rotation * 90
 		inst.name = comp_name
-		
+
 		print("Found ", inst.name, " with data: ", data)
 		print("Set component ", inst.name, " to position: ", inst.position)
-		
+
 		_built.append(inst)
-	
+
 	print("Ship built: %d components" % _built.size())
 
 func defeated_enemy(enemy: CharacterBody2D):

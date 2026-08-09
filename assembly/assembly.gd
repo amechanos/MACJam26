@@ -24,25 +24,25 @@ var grid_origin: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	var vp: Vector2 = get_viewport_rect().size
 	grid_origin = Vector2(
-		(vp.x - GRID_COLS * CELL_SIZE) / 2.0,
-		80.0
+			(vp.x - GRID_COLS * CELL_SIZE) / 2.0,
+			80.0
 	)
-	
+
 	# Keep Global in sync
 	Global.assembly_config = {
 		"grid_cols": GRID_COLS,
 		"grid_rows": GRID_ROWS,
 		"cell_size": CELL_SIZE
 	}
-	
+
 	_init_grid()
-	
+
 	# --- FIRST ITERATION LOGIC ---
 	if Global.has_assembly():
 		_restore_assembly()
 	else:
 		_place_core_at_center()
-	
+
 	_spawn_palette_blocks()
 	_setup_ui()
 
@@ -88,7 +88,7 @@ func _create_block(shape_name: String) -> DraggableBlock:
 	block.grid_cols = GRID_COLS
 	block.grid_rows = GRID_ROWS
 	block.palette_y_threshold = grid_origin.y + GRID_ROWS * CELL_SIZE + 40.0
-	
+
 	block.drag_started.connect(_on_block_drag_started)
 	block.dropped.connect(_on_block_dropped)
 	return block
@@ -96,16 +96,16 @@ func _create_block(shape_name: String) -> DraggableBlock:
 
 func _commit_block_to_grid(block: DraggableBlock, col: int, row: int) -> void:
 	var matrix: Array = Global.get_rotated_shape(block.shape_name, block.rotation_state)
-	
+
 	# Wipe this block's previous occupation
 	_clear_block_from_grid(block.name)
-	
+
 	# Write to matrix
 	for r in range(matrix.size()):
 		for c in range(matrix[r].size()):
 			if matrix[r][c] == 1:
 				grid[col + c][row + r] = block.name
-	
+
 	# Snap visually
 	block.global_position = grid_origin + Vector2(col, row) * CELL_SIZE
 	block.is_placed = true
@@ -130,36 +130,36 @@ func _spawn_palette_blocks() -> void:
 		if is_instance_valid(b):
 			b.queue_free()
 	palette_blocks.clear()
-	
+
 	# Wait one frame so HBoxContainer has finished layout
 	await get_tree().process_frame
-	
+
 	var pool: Array = Global.SHAPES.keys()
 	# Don't offer CORE if one already exists on the grid
 	if _has_core_placed():
 		pool.erase("CORE")
-	
+
 	pool.shuffle()
-	
+
 	var slots: Array[Node] = palette_hbox.get_children()
 	for i in range(min(PALETTE_COUNT, slots.size())):
 		var shape: String = pool[i % pool.size()]
 		var block: DraggableBlock = _create_block(shape)
 		block.name = "%s_palette_%d" % [shape, i]
 		block.slot_index = i
-		
+
 		# Center block inside its HBox slot
 		var slot: Control = slots[i]
 		var slot_center: Vector2 = slot.global_position + slot.size / 2.0
 		var matrix: Array = Global.get_rotated_shape(shape, 0)
 		var off: Vector2 = Vector2(matrix[0].size(), matrix.size()) * CELL_SIZE / 2.0
-		
+
 		block.global_position = slot_center - off
 		block.resting_position = block.global_position
-		
+
 		var relative = desc.get_child(i)
 		relative.text = shape if shape.to_lower() != "bomb-base-2" else "cannon"
-		
+
 		blocks_container.add_child(block)
 		palette_blocks.append(block)
 
@@ -184,7 +184,7 @@ func _on_block_drag_started(block: DraggableBlock) -> void:
 
 func _on_block_dropped(block: DraggableBlock) -> void:
 	block.z_index = 0
-	
+
 	# Dropped below the build zone?
 	if block.global_position.y > block.palette_y_threshold:
 		if block.placed_col >= 0:
@@ -194,13 +194,13 @@ func _on_block_dropped(block: DraggableBlock) -> void:
 			# Palette block dragged back down → return to slot
 			block.global_position = block.resting_position
 		return
-	
+
 	# Try to snap to grid
 	var matrix: Array = Global.get_rotated_shape(block.shape_name, block.rotation_state)
 	var rel: Vector2 = block.global_position - grid_origin
 	var col: int = int(round(rel.x / CELL_SIZE))
 	var row: int = int(round(rel.y / CELL_SIZE))
-	
+
 	# Validate bounds & collisions
 	for r in range(matrix.size()):
 		for c in range(matrix[r].size()):
@@ -213,15 +213,15 @@ func _on_block_dropped(block: DraggableBlock) -> void:
 				if grid[gc][gr] != "" and grid[gc][gr] != block.name:
 					_revert_or_return(block)
 					return
-	
+
 	# --- VALID PLACEMENT ---
 	_commit_block_to_grid(block, col, row)
-	
+
 	# If this was a fresh palette pick, discard the other two (Pick 1 of 3)
 	if block.slot_index >= 0:
 		_dismiss_other_palette_blocks(block)
 		block.slot_index = -1
-	
+
 	placed_blocks[block.name] = block
 
 
@@ -255,7 +255,7 @@ func _on_confirm_pressed() -> void:
 	if placed_blocks.is_empty():
 		print("BuildManager: Nothing to save.")
 		return
-	
+
 	var placements: Dictionary = {}
 	for block_name in placed_blocks.keys():
 		var b: DraggableBlock = placed_blocks[block_name]
@@ -265,11 +265,11 @@ func _on_confirm_pressed() -> void:
 			"shape_name": b.shape_name,
 			"rotation": b.rotation_state
 		}
-	
+
 	Global.store_assembly(placements, Global.assembly_config)
 	print("BuildManager: Saved %d components." % placements.size())
 	_print_matrix()
-	
+
 	get_tree().change_scene_to_file("res://main.tscn")
 
 
@@ -290,12 +290,12 @@ func _print_matrix() -> void:
 func _draw() -> void:
 	var rect: Rect2 = Rect2(grid_origin, Vector2(GRID_COLS, GRID_ROWS) * CELL_SIZE)
 	draw_rect(rect, Color(0.08, 0.08, 0.12, 1.0))
-	
+
 	for x in range(GRID_COLS + 1):
 		var a: Vector2 = grid_origin + Vector2(x * CELL_SIZE, 0)
 		var b: Vector2 = grid_origin + Vector2(x * CELL_SIZE, GRID_ROWS * CELL_SIZE)
 		draw_line(a, b, Color(0.25, 0.25, 0.35), 1.5)
-	
+
 	for y in range(GRID_ROWS + 1):
 		var a: Vector2 = grid_origin + Vector2(0, y * CELL_SIZE)
 		var b: Vector2 = grid_origin + Vector2(GRID_COLS * CELL_SIZE, y * CELL_SIZE)

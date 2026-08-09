@@ -20,14 +20,14 @@ var enemy_costs: Dictionary = {
 func _ready() -> void:
 	# Initialize random number generator
 	randomize()
-	
+
 	# Start the first wave
 	start_next_wave()
 
 func start_next_wave() -> void:
 	wave_number += 1
 	print("Wave ", wave_number)
-	
+
 	# Calculate total allowed cost for this wave
 	var current_wave_target_cost: int = base_wave_cost + (wave_number - 1) * cost_scaling
 	spawn_wave(current_wave_target_cost)
@@ -35,7 +35,7 @@ func start_next_wave() -> void:
 func spawn_wave(target_cost: int) -> void:
 	var current_cost: int = 0
 	var available_enemies: Array = enemy_costs.keys()
-	
+
 	# Determine the minimum cost to prevent an infinite loop 
 	# if the remaining budget is smaller than any enemy's cost.
 	var min_cost: int = enemy_costs[available_enemies[0]]
@@ -49,7 +49,7 @@ func spawn_wave(target_cost: int) -> void:
 		var random_index: int = randi() % available_enemies.size()
 		var chosen_enemy: String = available_enemies[random_index]
 		var cost: int = enemy_costs[chosen_enemy]
-		
+
 		# If the chosen enemy's cost fits in the remaining budget, spawn it
 		if current_cost + cost <= target_cost:
 			spawn_enemy(chosen_enemy)
@@ -59,15 +59,15 @@ func spawn_enemy(enemy_name: String) -> void:
 	if not enemy_scenes.has(enemy_name):
 		push_error("Enemy type not found: " + enemy_name)
 		return
-		
+
 	var enemy_instance: CharacterBody2D = enemy_scenes[enemy_name].instantiate()
-	
+
 	# Track active enemies for wave progression
 	active_enemies += 1
-	
+
 	# Bind the enemy instance to the tree_exited signal callback
 	enemy_instance.dead.connect(_on_enemy_defeated.bind(enemy_instance))
-	
+
 	# Add the enemy to the scene tree
 	add_child(enemy_instance)
 
@@ -80,7 +80,7 @@ func _on_enemy_defeated(enemy: CharacterBody2D) -> void:
 	if ship.has_method("defeated_enemy"):
 		ship.defeated_enemy(enemy)
 	active_enemies -= 1
-	
+
 	if active_enemies <= 0:
 		if ship.has_method("heal"):
 			ship.heal(ship.max_health * 0.25)  # Heal 25% hp every new wave

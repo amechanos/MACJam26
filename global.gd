@@ -1,16 +1,16 @@
 extends Node
 
 const SHAPES = {
-	"CORE":    [[1]],
+	"CORE": [[1]],
 	#"LASER":  [[1, 1],
-				#[1, 0]],
+	#[1, 0]],
 	#"DRONE":   [[1],
-				#[1],
-				#[1]],
+	#[1],
+	#[1]],
 	"GUN-BASE": [[1, 1]],
-	"BOMB-BASE-2":  [[0, 1],
-				[1, 1],
-				[0, 1]]
+	"BOMB-BASE-2": [[0, 1],
+		[1, 1],
+		[0, 1]]
 }
 
 var assembly_placements: Dictionary = {}

@@ -26,8 +26,8 @@ func create_laser() -> void:
 	add_child(current_laser)
 
 	current_laser.position = Vector2(
-		body.size.x,
-		body.size.y / 2 - 9
+			body.size.x,
+			body.size.y / 2 - 9
 	)
 	$Timer.start(5)
 

@@ -19,18 +19,18 @@ func _ready() -> void:
 func fire() -> void:
 	if not from_player:
 		super_fire()
-	
+
 	if time_to_next_shot > 0:
 		return
 	if bullet_scene == null:
 		print("Bullet not found!")
 		return
-	
+
 	fire_sfx.play()
 
 	var new_bomb = bullet_scene.instantiate()
 	new_bomb.from_player = from_player
-	
+
 	var spawn_offset = Vector2(body.size.x * 2.25, body.size.y * 1.5)
 	new_bomb.global_position = global_position + spawn_offset.rotated(global_rotation)
 
@@ -46,18 +46,18 @@ func fire() -> void:
 func super_fire() -> void:
 	if time_to_next_super_shot > 0:
 		return
-	
+
 	if bullet_scene == null:
 		print("Bullet not found!")
 		return
-	
+
 	fire_sfx.play()
 	voice_lines.pick_random().play()
-	
+
 	var bombs = [bullet_scene.instantiate(), bullet_scene.instantiate()]
 	for bomb in bombs:
 		bomb.from_player = from_player
-		
+
 		var spawn_offset = Vector2(body.size.x, body.size.y)
 		bomb.global_position = global_position + spawn_offset.rotated(global_rotation)
 
@@ -68,5 +68,5 @@ func super_fire() -> void:
 	var super_shot_spread = 0.25
 	bombs[0].setup(Vector2.RIGHT.rotated(global_rotation - super_shot_spread), bullet_speed)
 	bombs[1].setup(Vector2.RIGHT.rotated(global_rotation + super_shot_spread), bullet_speed)
-	
+
 	# Add voice lines here

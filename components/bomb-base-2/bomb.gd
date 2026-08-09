@@ -3,7 +3,7 @@ extends BaseProjectile
 @export var explosion_scene: PackedScene
 
 # Prevents the function from executing multiple times on simultaneous collisions
-var _has_exploded: bool = false 
+var _has_exploded: bool = false
 
 func _ready() -> void:
 	damage = 50.0
@@ -17,13 +17,13 @@ func destroy_projectile() -> void:
 	if explosion_scene:
 		var explosion = explosion_scene.instantiate() as Area2D
 		explosion.global_position = global_position
-		
+
 		# Adding to parent ensures it spawns in the world properly, not attached to the dying bomb
 		get_parent().add_child(explosion)
 
 		# Force Godot to update the transform immediately so the collision query is accurate
 		explosion.force_update_transform()
-		
+
 		# Await two physics frames. Godot's physics engine often requires a double-tick 
 		# for newly spawned Area2Ds to reliably register overlaps via get_overlapping_areas()
 		await get_tree().physics_frame
@@ -54,12 +54,12 @@ func destroy_projectile() -> void:
 func _process_aoe_hit(target: Node, hit_targets: Array[Node], aoe_damage: float) -> void:
 	if not target or target in hit_targets or not target.has_method("take_dmg"):
 		return
-		
+
 	# If fired by the player, only damage enemies
 	if from_player and target is BaseEnemy:
 		hit_targets.append(target)
 		target.take_dmg(aoe_damage)
-		
+
 	# If fired by an enemy, damage non-enemies (like the Player)[cite: 1, 3]
 	elif not from_player and not target is BaseEnemy:
 		hit_targets.append(target)
