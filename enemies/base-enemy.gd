@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name BaseEnemy
 
+signal dead
+
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
 var health: float = 100.0
@@ -188,5 +190,6 @@ func take_dmg(dmg: float) -> void:
 		kill()
 
 func kill() -> void:
+	dead.emit()
 	queue_free()
 	print("Enemy died!")

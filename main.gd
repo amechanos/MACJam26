@@ -66,7 +66,7 @@ func spawn_enemy(enemy_name: String) -> void:
 	active_enemies += 1
 	
 	# Bind the enemy instance to the tree_exited signal callback
-	enemy_instance.tree_exited.connect(_on_enemy_defeated.bind(enemy_instance))
+	enemy_instance.dead.connect(_on_enemy_defeated.bind(enemy_instance))
 	
 	# Add the enemy to the scene tree
 	add_child(enemy_instance)
