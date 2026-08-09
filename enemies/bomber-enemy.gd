@@ -23,7 +23,15 @@ func _ready() -> void:
 		
 	var cannon_instance = cannon_scene.instantiate()
 	if cannon_instance is not WeaponBase:
+		print("cannon_instance is not a weapon!")
 		return
+	
+	# Hide the weapon
+	var body = cannon_instance.get_node_or_null("body") as ColorRect
+	var head = cannon_instance.get_node_or_null("head") as ColorRect
+	if body: body.hide()
+	if head: head.hide()
+	
 	cannon_instance.from_player = false
 	add_child(cannon_instance)
 	

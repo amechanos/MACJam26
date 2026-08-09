@@ -26,6 +26,9 @@ _bundled = {
 [node name="BombBase" type="Node2D" unique_id=1213972145]
 script = ExtResource("1_aqgvy")
 bullet_scene = SubResource("PackedScene_ibl8r")
+bullet_speed = null
+fire_delay = null
+from_player = null
 
 [node name="body" type="ColorRect" parent="." unique_id=1601732597]
 offset_left = 1.0

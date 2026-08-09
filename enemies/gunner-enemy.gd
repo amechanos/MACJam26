@@ -12,7 +12,13 @@ func _ready() -> void:
 		
 	var gun_instance = gun_scene.instantiate()
 	if gun_instance is not WeaponBase:
+		print("gun_instance is not a weapon!")
 		return
+	
+	# Hide the gun
+	var body = gun_instance.get_node_or_null("body") as ColorRect
+	if body: body.hide()
+	
 	gun_instance.from_player = false
 	add_child(gun_instance)
 	
