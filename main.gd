@@ -72,17 +72,18 @@ func spawn_enemy(enemy_name: String) -> void:
 	add_child(enemy_instance)
 
 func _on_enemy_defeated(enemy: CharacterBody2D) -> void:
+	if not is_inside_tree():
+		return
 	if not is_instance_valid(ship):
 		print("Invalid ship instance!")
 		return
-
 	if ship.has_method("defeated_enemy"):
 		ship.defeated_enemy(enemy)
 	active_enemies -= 1
 	
-	# Check if the wave is fully cleared
 	if active_enemies <= 0:
 		if ship.has_method("heal"):
 			ship.heal(99999)
-		# Small buffer delay before starting the next wave
-		get_tree().create_timer(1.5).timeout.connect(start_next_wave)
+		var tree = get_tree()
+		if tree:
+			tree.create_timer(1.5).timeout.connect(start_next_wave)

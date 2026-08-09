@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://bbkescgt1j0fj"]
+
+[ext_resource type="Script" uid="uid://dcko4jyduv77t" path="res://gameovermenu.gd" id="1_dlgg4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_prnm5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aqg6t"]
+
+[node name="gameovermenu" type="Control" unique_id=79510238]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_dlgg4")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1443542463]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 1135.0
+offset_bottom = 650.0
+grow_horizontal = 2
+color = Color(0.023529412, 0, 0, 0.58431375)
+
+[node name="Label" type="Label" parent="." unique_id=194241041]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 402.0
+offset_top = 107.0
+offset_right = 714.0
+offset_bottom = 174.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 48
+text = "GAME OVER"
+
+[node name="Button2" type="Button" parent="." unique_id=99344558]
+layout_mode = 0
+offset_left = 548.0
+offset_top = 299.0
+offset_right = 606.0
+offset_bottom = 330.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_prnm5")
+text = "QUIT
+"
+
+[node name="Button" type="Button" parent="." unique_id=1133677627]
+layout_mode = 0
+offset_left = 545.0
+offset_top = 234.0
+offset_right = 611.0
+offset_bottom = 263.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_aqg6t")
+text = "RETRY"
+
+[connection signal="pressed" from="Button2" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_2_pressed"]

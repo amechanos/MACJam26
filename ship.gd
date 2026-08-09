@@ -3,11 +3,12 @@ class_name Ship
 
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
-var health: float = 1000.0
-var max_health: float = 1000.0
+var health: float = 1
+var max_health: float = 1
 var health_regen: float = 10.0
 var health_regen_interval: float = 1.0  # Seconds
 var time_since_last_regen: float = 0.0
+var is_dead: bool = false
 
 @export var xp: float = 0.0
 @export var level: int = 0
@@ -35,6 +36,9 @@ func _ready() -> void:
 		push_warning("Ship: 'Area2D' child node not found on " + name)
 
 func _process(delta: float) -> void:
+	if is_dead:
+		return
+
 	time_since_last_regen += delta
 	if time_since_last_regen >= health_regen_interval:
 		heal(health_regen)
@@ -45,6 +49,8 @@ func _process(delta: float) -> void:
 	fire_gun()
 
 func heal(hp: float) -> void:
+	if is_dead:
+		return
 	var old_health = health
 	health = min(health + hp, max_health)
 	var healed_amount = health - old_health
@@ -62,6 +68,8 @@ func fire_gun() -> void:
 			gun.fire()
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if is_dead:
+		return
 	if area is not BaseProjectile:
 		return
 	if area.from_player:
@@ -72,7 +80,8 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 
 # Exact same as in base-enemy.gd
 func dmg_number(dmg: float, color) -> void:
-	# Spawn Floating Damage Label
+	if not is_inside_tree():
+		return
 	var label := Label.new()
 	label.text = str(round(dmg))
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -80,26 +89,23 @@ func dmg_number(dmg: float, color) -> void:
 	label.global_position = global_position
 	label.modulate = color
 	
-	# Add to main scene tree so it remains visible even if enemy dies
 	var scene_root = get_tree().current_scene
 	if scene_root == null:
 		scene_root = get_tree().root
 	scene_root.add_child(label)
 	
-	# Center pivot offset so scaling expands from label center
 	label.pivot_offset = label.size * 0.5
 	label.scale = Vector2(0.5, 0.5)
 	
-	# Sequentially animate over 1 second total
 	var tween := label.create_tween()
-	# Phase 1 (0.0s - 0.5s): Slowly enlarge
 	tween.tween_property(label, "scale", Vector2(1.5, 1.5), 0.5)
-	# Phase 2 (0.5s - 1.0s): Fade to transparent
 	tween.tween_property(label, "modulate:a", 0.0, 0.5)
-	# Cleanup label node upon completion
 	tween.tween_callback(label.queue_free)
 
 func take_dmg(dmg: float) -> void:
+	if is_dead:
+		return
+
 	health -= dmg
 	print("Player took %d damage! %d health remaining." % [dmg, health])
 	dmg_number(dmg, Color.FIREBRICK)
@@ -108,10 +114,20 @@ func take_dmg(dmg: float) -> void:
 		kill()
 
 func kill() -> void:
-	# Death sounds here!
+	if is_dead:
+		return
+	is_dead = true
+
 	print("Game Over!")
-	queue_free()
-	
+	var overlay_scene = load("res://gameovermenu.tscn")
+	var overlay_instance = overlay_scene.instantiate()
+	get_tree().root.add_child(overlay_instance)
+
+	hide()
+	set_physics_process(false)
+	set_process(false)
+	get_tree().paused = true
+
 func move(delta: float) -> void:
 	if use_mouse_movement:
 		var target_pos = get_global_mouse_position()
@@ -171,6 +187,8 @@ func build():
 	print("Ship built: %d components" % _built.size())
 
 func defeated_enemy(enemy: CharacterBody2D):
+	if is_dead:
+		return
 	xp += enemy.xp
 	print("Gained %d xp" % enemy.xp)
 	if xp >= 1:
