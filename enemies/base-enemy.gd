@@ -151,9 +151,39 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 func move(destination: Vector2, delta: float) -> void:
 	global_position = global_position.lerp(destination, 1.0 - exp(-speed * delta))
 
+func dmg_number(dmg: float, color) -> void:
+	# Spawn Floating Damage Label
+	var label := Label.new()
+	label.text = str(round(dmg))
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.global_position = global_position
+	label.modulate = color
+	
+	# Add to main scene tree so it remains visible even if enemy dies
+	var scene_root = get_tree().current_scene
+	if scene_root == null:
+		scene_root = get_tree().root
+	scene_root.add_child(label)
+	
+	# Center pivot offset so scaling expands from label center
+	label.pivot_offset = label.size * 0.5
+	label.scale = Vector2(0.5, 0.5)
+	
+	# Sequentially animate over 1 second total
+	var tween := label.create_tween()
+	# Phase 1 (0.0s - 0.5s): Slowly enlarge
+	tween.tween_property(label, "scale", Vector2(1.5, 1.5), 0.5)
+	# Phase 2 (0.5s - 1.0s): Fade to transparent
+	tween.tween_property(label, "modulate:a", 0.0, 0.5)
+	# Cleanup label node upon completion
+	tween.tween_callback(label.queue_free)
+
 func take_dmg(dmg: float) -> void:
 	health -= dmg
 	print("Enemy took damage!")
+	dmg_number(dmg, Color.STEEL_BLUE)
+
 	if health <= 0:
 		kill()
 
