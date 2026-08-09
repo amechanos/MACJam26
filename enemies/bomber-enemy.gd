@@ -13,6 +13,8 @@ func _ready() -> void:
 	angular_velocity = 0.35
 	min_offset = Vector2(-100.0, -100.0)
 	max_offset = Vector2(100.0, 100.0)
+	scroll_speed /= 2.0
+	xp = 3.0
 	
 	super._ready()
 	if cannon_scene == null:

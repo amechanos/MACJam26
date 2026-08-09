@@ -5,8 +5,10 @@ class_name BaseEnemy
 
 var health: float = 100.0
 var speed: float = 3.0
+var scroll_speed: float = 60.0
 var target_pos: Vector2 = Vector2.ZERO
 var screen_size: Vector2 = Vector2.ZERO
+@export var xp: float = 1.0
 
 # Rotation parameters
 @export var angular_velocity: float = 0.5 # Base rotation speed magnitude in rad/sec
@@ -68,6 +70,10 @@ func _ready() -> void:
 	_pick_new_target()
 
 func _process(delta: float) -> void:
+	if global_position.x < 0:
+		global_position.x = screen_size.x
+		target_pos.x = screen_size.x
+	
 	move(target_pos, delta)
 	
 	# 1. Timer check: Randomly attempt to flip direction once per second
@@ -96,6 +102,7 @@ func _process(delta: float) -> void:
 		move_timer = 0.0
 		_reset_move_timer()
 		_pick_new_target()
+	target_pos -= Vector2(scroll_speed * delta, 0)
 
 func orient_gun() -> void:
 	for i in range(gun_list.size()):
