@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bbkescgt1j0fj"]
 
 [ext_resource type="Script" uid="uid://dcko4jyduv77t" path="res://gameovermenu.gd" id="1_dlgg4"]
+[ext_resource type="AudioStream" uid="uid://dc4x5c44668vd" path="res://sounds/death.wav" id="2_w45ex"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_prnm5"]
 
@@ -55,6 +56,10 @@ offset_right = 611.0
 offset_bottom = 263.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_aqg6t")
 text = "RETRY"
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="." unique_id=597457863]
+stream = ExtResource("2_w45ex")
+volume_db = -10.0
 
 [connection signal="pressed" from="Button2" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_button_2_pressed"]

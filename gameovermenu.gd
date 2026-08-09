@@ -1,6 +1,9 @@
 extends Control
 
+@onready var death_sfx: AudioStreamPlayer2D = $DeathSFX
+
 func _ready() -> void:
+	death_sfx.play()
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	var dim_rect: ColorRect = $ColorRect

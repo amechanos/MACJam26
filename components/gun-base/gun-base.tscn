@@ -24,6 +24,7 @@ color = Color(0.601223, 0.601223, 0.60122293, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1560070397]
+position = Vector2(53, 23)
 rotation = 1.5707964
 scale = Vector2(4.5, 4.5)
 texture = ExtResource("3_0bh5r")

@@ -31,7 +31,7 @@ func fire() -> void:
 	var new_bomb = bullet_scene.instantiate()
 	new_bomb.from_player = from_player
 	
-	var spawn_offset = Vector2(body.size.x, 0)
+	var spawn_offset = Vector2(body.size.x * 2.25, body.size.y * 1.5)
 	new_bomb.global_position = global_position + spawn_offset.rotated(global_rotation)
 
 	# Add directly to root tree so it moves independently of the enemy node
@@ -58,7 +58,7 @@ func super_fire() -> void:
 	for bomb in bombs:
 		bomb.from_player = from_player
 		
-		var spawn_offset = Vector2(body.size.x, 0)
+		var spawn_offset = Vector2(body.size.x, body.size.y)
 		bomb.global_position = global_position + spawn_offset.rotated(global_rotation)
 
 		# Add directly to root tree so it moves independently of the enemy node
