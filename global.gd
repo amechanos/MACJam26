@@ -2,11 +2,11 @@ extends Node
 
 const SHAPES = {
 	"CORE":    [[1]],
-	"LASER":  [[1, 1],
-				[1, 0]],
-	"DRONE":   [[1],
-				[1],
-				[1]],
+	#"LASER":  [[1, 1],
+				#[1, 0]],
+	#"DRONE":   [[1],
+				#[1],
+				#[1]],
 	"BLASTER": [[1, 1]],
 	"BOMB-BASE-2":  [[0, 1],
 				[1, 1],

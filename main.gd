@@ -1,7 +1,7 @@
 extends Node
 
 var wave_number: int = 0
-var base_wave_cost: int = 100
+var base_wave_cost: int = 40
 var cost_scaling: int = 10
 var active_enemies: int = 0
 @onready var ship: Node2D = $ship
