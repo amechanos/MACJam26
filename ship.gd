@@ -3,8 +3,8 @@ class_name Ship
 
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
-var health: float = 1
-var max_health: float = 1
+var health: float = 1000.0
+var max_health: float = 1000.0
 var health_regen: float = 10.0
 var health_regen_interval: float = 1.0  # Seconds
 var time_since_last_regen: float = 0.0
