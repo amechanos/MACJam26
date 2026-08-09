@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bi5hxi5afh2wd"]
 
 [ext_resource type="Script" uid="uid://5if7l4ibf6wi" path="res://enemies/bomber-enemy.gd" id="1_4ndea"]
-[ext_resource type="PackedScene" uid="uid://d26hfcigfiwsp" path="res://components/cannon/bomb-base-2.tscn" id="2_v5soo"]
+[ext_resource type="PackedScene" uid="uid://d26hfcigfiwsp" path="res://components/bomb-base-2/bomb-base-2.tscn" id="2_v5soo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v5soo"]
 

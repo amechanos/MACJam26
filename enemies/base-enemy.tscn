@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a2ulj"]
-size = Vector2(40, 41)
+size = Vector2(59, 60)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=267958019]
 script = ExtResource("1_a2ulj")
@@ -16,7 +16,6 @@ shape = SubResource("RectangleShape2D_f23r7")
 [node name="Area2D" type="Area2D" parent="." unique_id=669636085]
 
 [node name="hitbox" type="CollisionShape2D" parent="Area2D" unique_id=531673504]
-position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_a2ulj")
 debug_color = Color(0.6633702, 0.44787687, 0.6659709, 0.41960785)
 

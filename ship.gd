@@ -10,7 +10,6 @@ var level: int = 0
 
 # --- MOVEMENT VARIABLES ---
 @export var move_speed: float = 400.0
-@export var use_mouse_movement: bool = false  # Toggle in the inspector!
 
 # --- GUN VARIABLES ---
 var gun_list: Array[WeaponBase] = []
@@ -36,6 +35,13 @@ func _process(delta: float) -> void:
 	move(delta)
 	orient_gun()
 	fire_gun()
+
+func move(delta: float) -> void:
+	var target_pos = get_global_mouse_position()
+	position = position.lerp(target_pos, 20 * delta)
+		
+	position.x = clamp(position.x, 0, screen_size.x - 100)
+	position.y = clamp(position.y, 0, screen_size.y)
 
 func heal(hp: float) -> void:
 	health = min(health + hp, max_health)
@@ -70,14 +76,6 @@ func kill() -> void:
 	print("Game Over!")
 	queue_free()
 	
-func move(delta: float) -> void:
-	if use_mouse_movement:
-		var target_pos = get_global_mouse_position()
-		position = position.lerp(target_pos, 20 * delta)
-		
-	position.x = clamp(position.x, 0, screen_size.x * 0.5)
-	position.y = clamp(position.y, 0, screen_size.y)
-	
 #-------------------------------------------------------------------------------
 #BUILDING SHIP VIA MATRIX
 
@@ -104,10 +102,13 @@ func build():
 	var grid_px = Vector2(cfg.grid_cols * cfg.cell_size, cfg.grid_rows * cfg.cell_size)
 	var origin = -grid_px / 2.0 if center_grid else Vector2.ZERO
 	
-	for comp_name in Global.assembly_placements.keys():
-		var data = Global.assembly_placements[comp_name]
-		var components_folder: String = "res://components/%s/" % data.shape_name.to_lower()
-		var path = components_folder.path_join(data.shape_name.to_lower() + ".tscn")
+	for comp_key in Global.assembly_placements.keys():
+		var data = Global.assembly_placements[comp_key]
+		var shape_name: String = data.get("shape_name", comp_key.split("_")[0])
+		var rotation_idx: int = data.get("rotation", 0)
+		
+		var components_folder: String = "res://components/%s/" % shape_name.to_lower()
+		var path = components_folder.path_join(shape_name.to_lower() + ".tscn")
 		
 		if not ResourceLoader.exists(path):
 			push_warning("ShipBuilder: Scene not found: %s" % path)
@@ -117,25 +118,29 @@ func build():
 		var inst = scene.instantiate()
 		container.add_child(inst)
 		
-		inst.position = origin + Vector2(data.col, data.row) * cfg.cell_size
-		inst.rotation_degrees = data.rotation * 90
-		inst.name = comp_name
+		# 1. Get rotated matrix dimensions (how many cols/rows it occupies on the grid)
+		var rot_matrix = Global.get_rotated_shape(shape_name, rotation_idx)
+		var rot_cols: int = rot_matrix[0].size()
+		var rot_rows: int = rot_matrix.size()
+		
+		# 2. Calculate center pixel offset of the shape's occupied grid footprint
+		var footprint_center = Vector2(
+			data.col,
+			data.row
+		) * cfg.cell_size
+		
+		# 3. Position instance at the footprint center and apply rotation
+		inst.position = origin + footprint_center
+		inst.rotation_degrees = rotation_idx * 90
+		inst.name = comp_key
+		
+		# Store shape metadata on instance for export
+		inst.set_meta("shape_name", shape_name)
+		inst.set_meta("rotation", rotation_idx)
+		
+		print("Found ", inst.name, " with data: ", data)
+		print("Set component ", inst.name, " to position: ", inst.position)
 		
 		_built.append(inst)
 	
 	print("Ship built: %d components" % _built.size())
-
-func export_back_to_global():
-	var placements := {}
-	var cfg = Global.assembly_config
-	for c in _built:
-		var local = c.position
-		var origin = -Vector2(cfg.grid_cols * cfg.cell_size, cfg.grid_rows * cfg.cell_size) / 2.0 if center_grid else Vector2.ZERO
-		var grid_pos = (local - origin) / cfg.cell_size
-		placements[c.name] = {
-			"col": int(round(grid_pos.x)),
-			"row": int(round(grid_pos.y)),
-			"shape_name": c.name,  # or however you map it
-			"rotation": int(round(c.rotation_degrees / 90.0)) % 4
-		}
-	Global.store_assembly(placements, cfg)

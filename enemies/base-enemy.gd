@@ -3,17 +3,27 @@ class_name BaseEnemy
 
 @onready var hurtbox: Area2D = get_node_or_null("Area2D") as Area2D
 
-var health: float = 100.0
-var speed: float = 3.0
-var target_pos: Vector2 = Vector2.ZERO
-var screen_size: Vector2 = Vector2.ZERO
+@export_group("Stats")
+@export var max_health: float = 100.0
+@export var forward_speed: float = 120.0 # Speed moving left (pixels per second)
 
-# Rotation parameters
+@export_group("Shooting")
+@export var shoot_interval: float = 2.5 # Time in seconds between shots
+@export var auto_shoot: bool = true
+
+@export_group("Wave Movement")
+@export var wave_amplitude: float = 40.0 # Height of vertical sway (set to 0 for straight line)
+@export var wave_frequency: float = 2.0 # Speed of vertical sway
+
+@export_group("Rotation Parameters")
 @export var angular_velocity: float = 0.5 # Base rotation speed magnitude in rad/sec
-@export_range(0.0, 1.0) var direction_change_chance: float = 0.3 # Probability (0.0 to 1.0) per second to flip direction
-@export var rotation_smoothness: float = 8.0 # Interpolation speed for smooth direction transitions
+@export_range(0.0, 1.0) var direction_change_chance: float = 0.3 # Probability per second to flip direction
+@export var rotation_smoothness: float = 8.0
 @export_range(0.0, 360.0) var min_angle_degrees: float = 170.0
 @export_range(0.0, 360.0) var max_angle_degrees: float = 190.0
+
+var health: float
+var screen_size: Vector2 = Vector2.ZERO
 
 var min_angle_rad: float
 var max_angle_rad: float
@@ -21,24 +31,17 @@ var current_angular_velocity: float = 0.0
 var target_angular_velocity: float = 0.0
 var direction_timer: float = 0.0
 
+# Timers and motion state
+var shoot_timer: float = 0.0
+var spawn_y: float = 0.0
+var time_alive: float = 0.0
+
 # Gun management
 var gun_list: Array[WeaponBase] = []
 var gun_orientation: Array[float] = [] # Relative rotation offset (in radians) for each gun
 
-# Interval range for picking new locations (seconds)
-var min_interval: float = 1.0
-var max_interval: float = 3.0
-
-# Offset range from current position while moving to a new position
-var min_offset: Vector2 = Vector2(-150.0, -150.0)
-var max_offset: Vector2 = Vector2(150.0, 150.0)
-
-# Bounding box dictionary: "x" and "y" each hold Vector2(min, max)
-var boundary: Dictionary = {}
-var move_timer: float = 0.0
-var current_interval: float = 0.0
-
 func _ready() -> void:
+	health = max_health
 	screen_size = get_viewport_rect().size
 	
 	if hurtbox:
@@ -57,27 +60,49 @@ func _ready() -> void:
 	target_angular_velocity = angular_velocity
 	current_angular_velocity = angular_velocity
 	
-	if boundary.is_empty():
-		boundary = {
-			"x": Vector2(50.0, screen_size.x - 50.0),
-			"y": Vector2(50.0, screen_size.y - 50.0)
-		}
+	# Default spawn off the right edge if position isn't pre-set
+	if global_position == Vector2.ZERO:
+		global_position = Vector2(screen_size.x + 80.0, randf_range(60.0, screen_size.y - 60.0))
 		
-	global_position = Vector2(screen_size.x + 50, randf_range(50.0, screen_size.y - 50.0))
-	_reset_move_timer()
-	_pick_new_target()
+	spawn_y = global_position.y
 
 func _process(delta: float) -> void:
-	move(target_pos, delta)
+	time_alive += delta
 	
-	# 1. Timer check: Randomly attempt to flip direction once per second
+	# 1. Progressive leftward movement + vertical wave
+	move_enemy(delta)
+	
+	# 2. Dynamic rotation wiggling
+	update_rotation(delta)
+
+	# 3. Update gun positions/orientations
+	orient_gun()
+	
+	# 4. Controlled Fire Rate Timer
+	if auto_shoot:
+		shoot_timer += delta
+		if shoot_timer >= shoot_interval:
+			shoot_timer = 0.0
+			fire_gun()
+
+	# 5. Despawn check when completely off the left side of the screen
+	if global_position.x < -100.0:
+		queue_free()
+
+func move_enemy(delta: float) -> void:
+	# Continuous movement leftward
+	global_position.x -= forward_speed * delta
+	
+	# Subtle sine-wave pattern along Y axis
+	global_position.y = spawn_y + sin(time_alive * wave_frequency) * wave_amplitude
+
+func update_rotation(delta: float) -> void:
 	direction_timer += delta
 	if direction_timer >= 1.0:
 		direction_timer -= 1.0
 		if randf() < direction_change_chance:
 			target_angular_velocity = -target_angular_velocity
 
-	# 2. Limit check: Reverse rotation target direction if exceeding angular boundaries
 	if rotation >= max_angle_rad:
 		rotation = max_angle_rad
 		target_angular_velocity = -abs(angular_velocity)
@@ -85,17 +110,8 @@ func _process(delta: float) -> void:
 		rotation = min_angle_rad
 		target_angular_velocity = abs(angular_velocity)
 
-	# 3. Smooth transition: Interpolate current angular velocity towards target angular velocity
 	current_angular_velocity = lerp(current_angular_velocity, target_angular_velocity, 1.0 - exp(-rotation_smoothness * delta))
 	rotation += current_angular_velocity * delta
-
-	orient_gun()
-	
-	move_timer += delta
-	if move_timer >= current_interval:
-		move_timer = 0.0
-		_reset_move_timer()
-		_pick_new_target()
 
 func orient_gun() -> void:
 	for i in range(gun_list.size()):
@@ -107,19 +123,6 @@ func fire_gun() -> void:
 		if is_instance_valid(gun):
 			gun.fire()
 
-func _pick_new_target() -> void:
-	var offset_x: float = randf_range(min_offset.x, max_offset.x)
-	var offset_y: float = randf_range(min_offset.y, max_offset.y)
-	var candidate_pos: Vector2 = global_position + Vector2(offset_x, offset_y)
-	
-	candidate_pos.x = clampf(candidate_pos.x, boundary["x"].x, boundary["x"].y)
-	candidate_pos.y = clampf(candidate_pos.y, boundary["y"].x, boundary["y"].y)
-	
-	target_pos = candidate_pos
-
-func _reset_move_timer() -> void:
-	current_interval = randf_range(min_interval, max_interval)
-
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if area is not BaseProjectile:
 		return
@@ -128,16 +131,11 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 	
 	take_dmg(area.damage)
 	area.pierce -= 1
-	
-func move(destination: Vector2, delta: float) -> void:
-	global_position = global_position.lerp(destination, 1.0 - exp(-speed * delta))
 
 func take_dmg(dmg: float) -> void:
 	health -= dmg
-	print("Enemy took damage!")
 	if health <= 0:
 		kill()
 
 func kill() -> void:
 	queue_free()
-	print("Enemy died!")

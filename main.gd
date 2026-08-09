@@ -1,82 +1,92 @@
 extends Node
 
-var wave_number: int = 0
-var base_wave_cost: int = 20
-var cost_scaling: int = 10
-var active_enemies: int = 0
+@export_group("Spawning Difficulty")
+@export var base_spawn_interval: float = 3.0   # Time between spawns at 0 seconds
+@export var min_spawn_interval: float = 0.4    # Fastest possible time between spawns
+@export var difficulty_curve_rate: float = 0.015 # Higher = ramps up difficulty faster
+
 @onready var ship: Node2D = $ship
 
-# Preloading scenes based on the main.tscn provided[cite: 7]
+var elapsed_time: float = 0.0
+var spawn_timer: float = 0.0
+
+# Preloaded enemy scenes
 var enemy_scenes: Dictionary = {
 	"gunner": preload("res://enemies/gunner-enemy.tscn"),
 	"bomber": preload("res://enemies/bomber-enemy.tscn")
 }
 
-var enemy_costs: Dictionary = {
-	"gunner": 10,
-	"bomber": 15
+# Config: [unlock_time_in_seconds, weight]
+# Higher weight = higher relative spawn frequency
+var enemy_spawn_config: Dictionary = {
+	"gunner": {"unlock_time": 0.0, "weight": 100.0},
+	"bomber": {"unlock_time": 15.0, "weight": 40.0}
 }
 
 func _ready() -> void:
-	# Initialize random number generator
 	randomize()
-	
-	# Start the first wave
-	start_next_wave()
 
-func start_next_wave() -> void:
-	wave_number += 1
-	print("Wave ", wave_number)
+func _process(delta: float) -> void:
+	elapsed_time += delta
+	spawn_timer += delta
 	
-	# Calculate total allowed cost for this wave
-	var current_wave_target_cost: int = base_wave_cost + (wave_number - 1) * cost_scaling
-	spawn_wave(current_wave_target_cost)
-
-func spawn_wave(target_cost: int) -> void:
-	var current_cost: int = 0
-	var available_enemies: Array = enemy_costs.keys()
+	# Calculate current interval based on time elapsed
+	var current_interval: float = get_current_spawn_interval()
 	
-	# Determine the minimum cost to prevent an infinite loop 
-	# if the remaining budget is smaller than any enemy's cost.
-	var min_cost: int = enemy_costs[available_enemies[0]]
-	for key in available_enemies:
-		if enemy_costs[key] < min_cost:
-			min_cost = enemy_costs[key]
+	if spawn_timer >= current_interval:
+		spawn_timer = 0.0
+		spawn_random_enemy()
 
-	# Loop until the remaining budget cannot afford the cheapest enemy
-	while current_cost + min_cost <= target_cost:
-		# Randomly select an enemy
-		var random_index: int = randi() % available_enemies.size()
-		var chosen_enemy: String = available_enemies[random_index]
-		var cost: int = enemy_costs[chosen_enemy]
+# Dynamic spawn rate calculation (exponential scaling down towards min interval)
+func get_current_spawn_interval() -> float:
+	return lerp(min_spawn_interval, base_spawn_interval, exp(-difficulty_curve_rate * elapsed_time))
+
+func spawn_random_enemy() -> void:
+	var chosen_enemy: String = pick_enemy_for_current_time()
+	if chosen_enemy.is_empty():
+		return
 		
-		# If the chosen enemy's cost fits in the remaining budget, spawn it
-		if current_cost + cost <= target_cost:
-			spawn_enemy(chosen_enemy)
-			current_cost += cost
+	spawn_enemy(chosen_enemy)
+
+func pick_enemy_for_current_time() -> String:
+	var available_enemies: Array[String] = []
+	var weights: Array[float] = []
+	var total_weight: float = 0.0
+	
+	for enemy_name in enemy_spawn_config.keys():
+		var config: Dictionary = enemy_spawn_config[enemy_name]
+		if elapsed_time >= config["unlock_time"]:
+			# Scale weight slightly over time for tougher enemies
+			var weight: float = config["weight"]
+			available_enemies.append(enemy_name)
+			weights.append(weight)
+			total_weight += weight
+
+	if available_enemies.is_empty():
+		return ""
+
+	# Weighted random choice
+	var random_weight: float = randf_range(0.0, total_weight)
+	var current_sum: float = 0.0
+	
+	for i in range(available_enemies.size()):
+		current_sum += weights[i]
+		if random_weight <= current_sum:
+			return available_enemies[i]
+			
+	return available_enemies[0]
 
 func spawn_enemy(enemy_name: String) -> void:
 	if not enemy_scenes.has(enemy_name):
-		push_error("Enemy type not found: " + enemy_name)
+		push_error("Enemy scene not found: " + enemy_name)
 		return
 		
 	var enemy_instance: Node2D = enemy_scenes[enemy_name].instantiate()
 	
-	# Track active enemies for wave progression
-	active_enemies += 1
+	# Position off-screen to the right at a random Y coordinate
+	var viewport_rect: Rect2 = get_viewport().get_visible_rect()
+	var spawn_x: float = viewport_rect.size.x + 80.0
+	var spawn_y: float = randf_range(60.0, viewport_rect.size.y - 60.0)
+	enemy_instance.global_position = Vector2(spawn_x, spawn_y)
 	
-	# BaseEnemy calls queue_free() upon death.
-	# tree_exited is a built-in signal that fires when the node is freed.
-	enemy_instance.tree_exited.connect(_on_enemy_defeated)
-	
-	# Add the enemy to the scene tree
 	add_child(enemy_instance)
-
-func _on_enemy_defeated() -> void:
-	active_enemies -= 1
-	
-	# Check if the wave is fully cleared
-	if active_enemies <= 0:
-		ship.heal(99999)
-		# Small buffer delay before starting the next wave
-		get_tree().create_timer(1.5).timeout.connect(start_next_wave)

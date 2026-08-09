@@ -5,14 +5,9 @@ class_name BomberEnemy
 
 func _ready() -> void:
 	health = 200.0
-	speed = 1.0
-	min_interval = 2.0
-	max_interval = 4.0
 	min_angle_degrees = 165.0
 	max_angle_degrees = 205.0
 	angular_velocity = 0.35
-	min_offset = Vector2(-100.0, -100.0)
-	max_offset = Vector2(100.0, 100.0)
 	
 	super._ready()
 	if cannon_scene == null:
