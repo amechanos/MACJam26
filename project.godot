@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="SpaceJam"
-run/main_scene="uid://or0kq1j5epqw"
+run/main_scene="uid://cfiqviyv7mby8"
 config/features=PackedStringArray("4.7", "Mobile")
 config/icon="res://icon.svg"
 
