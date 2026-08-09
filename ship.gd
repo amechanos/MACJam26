@@ -163,24 +163,12 @@ func build():
 		inst.rotation_degrees = data.rotation * 90
 		inst.name = comp_name
 		
+		print("Found ", inst.name, " with data: ", data)
+		print("Set component ", inst.name, " to position: ", inst.position)
+		
 		_built.append(inst)
 	
 	print("Ship built: %d components" % _built.size())
-
-func export_back_to_global():
-	var placements := {}
-	var cfg = Global.assembly_config
-	for c in _built:
-		var local = c.position
-		var origin = -Vector2(cfg.grid_cols * cfg.cell_size, cfg.grid_rows * cfg.cell_size) / 2.0 if center_grid else Vector2.ZERO
-		var grid_pos = (local - origin) / cfg.cell_size
-		placements[c.name] = {
-			"col": int(round(grid_pos.x)),
-			"row": int(round(grid_pos.y)),
-			"shape_name": c.name,  # or however you map it
-			"rotation": int(round(c.rotation_degrees / 90.0)) % 4
-		}
-	Global.store_assembly(placements, cfg)
 
 func defeated_enemy(enemy: CharacterBody2D):
 	xp += enemy.xp

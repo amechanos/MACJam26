@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://cdd462ielore4"]
+
+[ext_resource type="Script" path="res://assembly/assembly.gd" id="1_ivxy8"]
+
+[node name="assembly" type="Node2D" unique_id=1019120180]
+script = ExtResource("1_ivxy8")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=598097384]
+
+[node name="ConfirmButton" type="Button" parent="CanvasLayer" unique_id=1090066515]
+offset_left = 948.0
+offset_top = 559.0
+offset_right = 1136.0
+offset_bottom = 630.0
+text = "Confirm"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=281059218]
+z_index = -5
+offset_left = 293.0
+offset_top = 461.0
+offset_right = 829.0
+offset_bottom = 629.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer" unique_id=1203705213]
+z_index = -5
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Slot1" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer" unique_id=543570004]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Slot2" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer" unique_id=1374615022]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Slot3" type="Control" parent="CanvasLayer/MarginContainer/HBoxContainer" unique_id=1540143107]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="desc" type="HBoxContainer" parent="." unique_id=1724864687]
+z_index = -5
+offset_left = 293.0
+offset_top = 398.0
+offset_right = 829.0
+offset_bottom = 458.0
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Slot1" type="Label" parent="desc" unique_id=1912652853]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+
+[node name="Slot2" type="Label" parent="desc" unique_id=1302134321]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+
+[node name="Slot3" type="Label" parent="desc" unique_id=366327647]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+
+[node name="BlocksContainer" type="Node2D" parent="." unique_id=71649378]

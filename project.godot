@@ -28,6 +28,10 @@ window/stretch/aspect="expand"
 
 project/assembly_name="SpaceJam"
 
+[gui]
+
+theme/custom_font="uid://dpm38m62wsl5g"
+
 [input]
 
 shoot={

@@ -3,28 +3,20 @@
 [ext_resource type="Script" uid="uid://c3vosyny4405k" path="res://ship.gd" id="1_4cq66"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f23r7"]
-size = Vector2(150, 50)
+size = Vector2(54, 50)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mtbgc"]
 size = Vector2(50, 49)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1169774264]
+position = Vector2(29, 25)
 script = ExtResource("1_4cq66")
 use_mouse_movement = true
 
-[node name="core" type="ColorRect" parent="." unique_id=2089672703]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 51.0
-offset_bottom = 51.0
-color = Color(1.5979409e-05, 0.96183914, 0.96301883, 1)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1344374723]
-position = Vector2(76, 26)
 shape = SubResource("RectangleShape2D_f23r7")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=432244225]
 
 [node name="hitbox" type="CollisionShape2D" parent="Area2D" unique_id=2033485984]
-position = Vector2(25, 26.5)
 shape = SubResource("RectangleShape2D_mtbgc")

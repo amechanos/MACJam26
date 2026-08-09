@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://2ja5hr575gp4"]
+
+[ext_resource type="Script" uid="uid://b32uaecldalvc" path="res://assembly/block.gd" id="1_aax3k"]
+
+[node name="block" type="Node2D" unique_id=1061095393]
+script = ExtResource("1_aax3k")

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d26hfcigfiwsp"]
 
-[ext_resource type="Script" uid="uid://d28rrhq3r3p1q" path="res://components/cannon/bomb-base.gd" id="1_bjdg2"]
-[ext_resource type="PackedScene" uid="uid://ds4d6k7e6mwmx" path="res://components/cannon/bomb.tscn" id="2_5j1xy"]
+[ext_resource type="Script" uid="uid://d28rrhq3r3p1q" path="res://components/bomb-base-2/bomb-base.gd" id="1_bjdg2"]
+[ext_resource type="PackedScene" uid="uid://ds4d6k7e6mwmx" path="res://components/bomb-base-2/bomb.tscn" id="2_5j1xy"]
 
 [node name="BombBase2" type="Node2D" unique_id=1213972145]
 script = ExtResource("1_bjdg2")
