@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cfiqviyv7mby8"]
 
 [ext_resource type="Script" uid="uid://dgd4mw8nxdjek" path="res://start_menu.gd" id="1_ia0g5"]
-[ext_resource type="Texture2D" uid="uid://bu7odyk717qx2" path="res://art/startmenu.png" id="2_vpdu5"]
+[ext_resource type="Texture2D" uid="uid://bu7odyk717qx2" path="res://art/backgrounds/startmenu.png" id="2_vpdu5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aqg6t"]
 
@@ -13,7 +13,7 @@ offset_bottom = 40.0
 script = ExtResource("1_ia0g5")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1602025352]
-texture_filter = 2
+texture_filter = 1
 layout_mode = 0
 offset_top = 2.0
 offset_right = 384.0

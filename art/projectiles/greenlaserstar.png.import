@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu7odyk717qx2"
-path="res://.godot/imported/startmenu.png-77fc8c42f23a0c349b7cdf50e8d976be.ctex"
+uid="uid://brolfj3cfrucq"
+path="res://.godot/imported/greenlaserstar.png-e088d31bdb416e5d3b1d8206cd87f251.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/startmenu.png"
-dest_files=["res://.godot/imported/startmenu.png-77fc8c42f23a0c349b7cdf50e8d976be.ctex"]
+source_file="res://art/projectiles/greenlaserstar.png"
+dest_files=["res://.godot/imported/greenlaserstar.png-e088d31bdb416e5d3b1d8206cd87f251.ctex"]
 
 [params]
 
