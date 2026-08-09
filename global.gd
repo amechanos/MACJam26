@@ -1,25 +1,23 @@
 extends Node
 
 const SHAPES = {
-	"CORE":    [[1, 1],
-				[1, 1]],
-	"CANNON":  [[1, 0],
-				[1, 1]],
-	"LASER":   [[1, 1, 1]],
-	"BLASTER": [[1, 1],
-				[1, 1]],
-	"ENGINE":  [[1],
+	"CORE":    [[1]],
+	"LASER":  [[1, 1],
+				[1, 0]],
+	"DRONE":   [[1],
 				[1],
 				[1]],
-	"SHIELD":  [[1, 1, 1],
-				[0, 1, 0]],
+	"BLASTER": [[1, 1]],
+	"BOMB-BASE-2":  [[0, 1],
+				[1, 1],
+				[0, 1]]
 }
 
 var assembly_placements: Dictionary = {}
 var assembly_config: Dictionary = {
 	"grid_cols": 5,
 	"grid_rows": 5,
-	"cell_size": 64.0
+	"cell_size": 50
 }
 
 func has_assembly() -> bool:
