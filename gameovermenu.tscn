@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bbkescgt1j0fj"]
 
 [ext_resource type="Script" uid="uid://dcko4jyduv77t" path="res://gameovermenu.gd" id="1_dlgg4"]
-[ext_resource type="AudioStream" uid="uid://dc4x5c44668vd" path="res://sounds/death.wav" id="2_w45ex"]
+[ext_resource type="AudioStream" uid="uid://c47o5rii0s3ar" path="res://death sound.mp3" id="2_w45ex"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_prnm5"]
 

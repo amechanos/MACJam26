@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dgd4mw8nxdjek" path="res://start_menu.gd" id="1_ia0g5"]
 [ext_resource type="Texture2D" uid="uid://bu7odyk717qx2" path="res://art/backgrounds/startmenu.png" id="2_vpdu5"]
+[ext_resource type="AudioStream" uid="uid://bhu5n6qg6pvj" path="res://startmenu.mp3" id="3_vpdu5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aqg6t"]
 
@@ -51,5 +52,10 @@ grow_vertical = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxEmpty_aqg6t")
 text = "START"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=310320744]
+stream = ExtResource("3_vpdu5")
+volume_db = 11.86
+autoplay = true
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
